@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#11598f"/>
+      <stop offset="1" stop-color="#0a3d66"/>
+    </linearGradient>
+    <linearGradient id="sand" x1="0" y1="204" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#b8996a"/>
+      <stop offset="1" stop-color="#76603f"/>
+    </linearGradient>
+    <linearGradient id="dome" x1="0" y1="96" x2="0" y2="198" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4d9aa0"/>
+      <stop offset="1" stop-color="#1a5470"/>
+    </linearGradient>
+    <linearGradient id="shaft" x1="0" y1="16" x2="0" y2="150" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#91e4dd" stop-opacity="0"/>
+      <stop offset="0.3" stop-color="#91e4dd" stop-opacity="0.1"/>
+      <stop offset="1" stop-color="#91e4dd" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="aura">
+      <stop stop-color="#6ae2cb" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#6ae2cb" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="lamp">
+      <stop stop-color="#ffd27a" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#ffd27a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Left seam with (2,0): the same water gradient, the sand top line entering
+       at y=204, and the crown of the Outer Lantern Chamber's dome, which leaves
+       (2,0) at y=124 in #2a7183. -->
+  <path fill="url(#water)" d="M0 0H256V256H0Z"/>
+  <path fill="url(#shaft)" d="M22 22H64L98 154L40 148Z"/>
+  <ellipse cx="96" cy="128" rx="80" ry="86" fill="url(#aura)"/>
+
+  <path fill="url(#sand)" d="M0 204C24 204 42 199 64 202S108 210 134 205S176 199 200 203S238 204 256 204V256H0Z"/>
+  <ellipse cx="110" cy="216" rx="60" ry="10" fill="#655b49" opacity="0.3"/>
+
+  <!-- The dome carried over from (2,0), running off to the left and settling. -->
+  <path fill="#2a7183" d="M0 124C4 110 18 100 34 100C58 100 84 110 96 126Z"/>
+  <g fill="url(#dome)">
+    <path d="M118 152C118 128 136 112 158 112S198 128 198 152V204H118Z"/>
+  </g>
+  <path fill="#2a7183" d="M116 151C116 124 136 106 158 106S200 124 200 151Z"/>
+  <path fill="#123e53" d="M110 208L118 196H206L214 208Z"/>
+  <g fill="#69918b">
+    <path d="M120 200H204V204H120ZM114 204H210V208H114Z"/>
+  </g>
+  <g fill="#0b394f">
+    <path d="M132 176V164A6 6 0 0 1 144 164V176Z"/>
+    <path d="M164 176V164A6 6 0 0 1 176 164V176Z"/>
+    <path d="M150 200V182A10 10 0 0 1 170 182V200Z"/>
+  </g>
+  <g fill="#ffd27a">
+    <path d="M135 173V164A3 3 0 0 1 141 164V173Z" opacity="0.85"/>
+    <path d="M167 173V164A3 3 0 0 1 173 164V173Z" opacity="0.6"/>
+    <path d="M153 194V183A6 6 0 0 1 165 183V194Z" opacity="0.85"/>
+  </g>
+  <path stroke="#2e6672" stroke-width="2" fill="none" d="M160 178V196M134 168H144M166 168H176"/>
+  <path fill="#73ada6" d="M122 180H196V183H122Z" opacity="0.55"/>
+
+  <!-- My mark: the Tidemaster's Bell-Beacon, a slender spire on the seaward
+       edge whose lamp-ring sends a pulse of light across the open water. -->
+  <path fill="#123f55" d="M212 208V96H226V208Z"/>
+  <path fill="#0e3648" d="M222 208V96H226V208Z"/>
+  <path fill="#286777" d="M204 100H234V110H204Z"/>
+  <path fill="#79c5bb" d="M204 100H234V103H204Z"/>
+  <path fill="#2a7183" d="M198 100C198 88 206 80 219 80S240 88 240 100Z"/>
+  <circle cx="219" cy="72" r="4" fill="#ffd27a"/>
+  <ellipse cx="219" cy="72" rx="26" ry="26" fill="url(#lamp)"/>
+  <g fill="none" stroke="#8bd2c4" stroke-width="1.5" opacity="0.55">
+    <path d="M219 72C198 80 186 96 186 116"/>
+    <path d="M219 72C219 88 218 102 218 118"/>
+    <path d="M219 72C240 80 250 96 252 114"/>
+  </g>
+  <g fill="#ffd27a" opacity="0.7">
+    <circle cx="232" cy="60" r="1.4"/>
+    <circle cx="206" cy="62" r="1.1"/>
+  </g>
+
+  <!-- Coral, ripples and pebbles, fading before the edges. -->
+  <g fill="none" stroke-linecap="round">
+    <g stroke="#216e70" stroke-width="3">
+      <path d="M40 214Q32 197 38 184M34 200L25 190M35 193L43 185"/>
+      <path d="M150 211Q158 196 154 184M160 200L169 191M159 193L151 184"/>
+    </g>
+    <g stroke="#d98778" stroke-width="2.5">
+      <path d="M92 215L90 201M89 206L83 201M88 204L94 197"/>
+      <path d="M196 210L194 196M193 201L187 195"/>
+    </g>
+    <g stroke="#d2b486" stroke-width="1" opacity="0.45">
+      <path d="M28 230Q44 226 60 230"/>
+      <path d="M112 236Q130 232 148 236"/>
+      <path d="M172 226Q188 222 204 226"/>
+    </g>
+  </g>
+  <g fill="#7c7152">
+    <ellipse cx="72" cy="242" rx="4" ry="2"/>
+    <ellipse cx="138" cy="246" rx="3" ry="1.5"/>
+    <ellipse cx="196" cy="232" rx="5" ry="2"/>
+  </g>
+  <g fill="#584734" opacity="0.5">
+    <ellipse cx="102" cy="242" rx="6" ry="3"/>
+    <ellipse cx="164" cy="224" rx="4" ry="2"/>
+  </g>
+  <g fill="none" stroke="#8ed5d1" stroke-width="1" opacity="0.45">
+    <circle cx="76" cy="96" r="2.5"/>
+    <circle cx="82" cy="78" r="1.5"/>
+    <circle cx="66" cy="60" r="2"/>
+  </g>
+  <g fill="#8ccfc9" opacity="0.32">
+    <circle cx="120" cy="70" r="1"/>
+    <circle cx="180" cy="110" r="1.2"/>
+    <circle cx="30" cy="120" r="1"/>
+  </g>
+</svg>
