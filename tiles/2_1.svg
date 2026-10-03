@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="rock" x1="0" y1="0" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#76603f"/>
+      <stop offset="1" stop-color="#3b2f22"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop stop-color="#ffd27a" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#ffd27a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="lair" x1="150" y1="120" x2="256" y2="230" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6a5340"/>
+      <stop offset="1" stop-color="#2c2418"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rock bed. Top edge is (2,0)'s sand ending in #76603f; left edge continues 1_1's rock. -->
+  <path fill="url(#rock)" d="M0 0H256V256H0Z"/>
+  <path fill="#8d7c58" opacity="0.35" d="M0 7C44 3 92 9 136 5S216 3 256 7V0H0Z"/>
+  <path fill="#2b2317" opacity="0.16" d="M0 118C48 128 96 112 144 122S216 128 256 120V256H0Z"/>
+
+  <!-- Strata lines entering from 1_1's right edge at y=36/50 and y=86/98. -->
+  <g fill="none" stroke-linecap="round">
+    <g stroke="#5d4b2e" stroke-width="3" opacity="0.45">
+      <path d="M0 36C46 28 92 44 138 38S212 28 256 38"/>
+      <path d="M0 86C44 94 90 78 136 86S212 96 256 88"/>
+    </g>
+    <g stroke="#a08a5e" stroke-width="1.5" opacity="0.25">
+      <path d="M0 50C46 42 92 58 138 52S212 42 256 52"/>
+      <path d="M0 98C44 106 90 90 136 98S212 108 256 100"/>
+    </g>
+  </g>
+
+  <!-- Kelp roots carried down from 2_0's seabed at x=24 and x=230, fading into the rock. -->
+  <g fill="none" stroke="#3f6b4a" stroke-width="3" stroke-linecap="round" opacity="0.4">
+    <path d="M24 0Q32 30 24 62Q18 88 26 116"/>
+    <path d="M230 0Q222 26 230 56Q236 84 228 112"/>
+  </g>
+
+  <!-- The kelp and sand of 2_0 leave faint nutrient threads seeping into the rock. -->
+  <g fill="none" stroke="#6fd3c6" stroke-width="1.2" opacity="0.2" stroke-linecap="round">
+    <path d="M70 0Q74 24 68 46"/>
+    <path d="M180 0Q176 28 182 52"/>
+  </g>
+
+  <!-- My mark: the Lantern Eel's Lair — an eel coiled in a warm-lit cave,
+       its glow trail slipping out the right seam for a future tile to catch. -->
+  <ellipse cx="200" cy="180" rx="88" ry="72" fill="url(#glow)"/>
+  <path fill="url(#lair)" d="M256 230C230 226 196 214 172 192S142 148 150 122Q156 104 176 100C168 122 168 142 186 162S238 200 256 206Z"/>
+  <path fill="#241d14" d="M256 224C232 220 204 208 184 190S156 150 162 128Q166 114 178 108C172 126 174 144 190 160S236 196 256 200Z" opacity="0.7"/>
+
+  <!-- The eel: deep body, warm lantern spots along its flank. -->
+  <path fill="#2a5a52" d="M256 176C230 174 206 166 190 150S172 116 178 98Q182 88 192 86C186 104 188 122 202 136S236 160 256 162Z"/>
+  <path fill="#1d4a45" d="M256 170C234 168 212 160 198 146S180 114 186 98Q188 92 192 88C188 104 192 120 204 132S234 154 256 156Z" opacity="0.6"/>
+  <g fill="#ffd27a">
+    <circle cx="196" cy="104" r="3" opacity="0.9"/>
+    <circle cx="204" cy="124" r="2.4" opacity="0.75"/>
+    <circle cx="216" cy="140" r="2.6" opacity="0.8"/>
+    <circle cx="232" cy="152" r="2.2" opacity="0.6"/>
+    <circle cx="248" cy="160" r="2" opacity="0.5"/>
+  </g>
+  <circle cx="192" cy="98" r="2.5" fill="#ffd27a"/>
+  <circle cx="191" cy="98" r="1" fill="#241d14"/>
+  <path fill="none" stroke="#8ed5d1" stroke-width="1" opacity="0.5" stroke-linecap="round" d="M198 92Q206 84 216 88"/>
+
+  <!-- Glow thread slipping out the right seam at y≈150, fading toward the edge. -->
+  <path fill="none" stroke="#ffd27a" stroke-width="2" opacity="0.35" stroke-linecap="round" d="M250 162Q254 158 256 156"/>
+  <path fill="none" stroke="#f0a95e" stroke-width="1.2" opacity="0.25" stroke-linecap="round" d="M244 168Q252 164 256 160"/>
+
+  <!-- Embers and bubbles drifting up from the lair, fading before the top edge. -->
+  <g fill="#ffd27a">
+    <circle cx="172" cy="140" r="1.8" opacity="0.4"/>
+    <circle cx="164" cy="110" r="1.4" opacity="0.25"/>
+    <circle cx="176" cy="80" r="1.1" opacity="0.15"/>
+  </g>
+  <g fill="none" stroke="#8ed5d1" stroke-width="1" opacity="0.4">
+    <circle cx="120" cy="160" r="2.2"/>
+    <circle cx="126" cy="140" r="1.5"/>
+    <circle cx="118" cy="122" r="1.8"/>
+  </g>
+
+  <!-- Ore specks and pebbles, kept clear of the edges. -->
+  <g fill="#6fd3c6" opacity="0.5">
+    <circle cx="52" cy="170" r="1.5"/>
+    <circle cx="96" cy="212" r="1.2"/>
+    <circle cx="140" cy="236" r="1.4"/>
+  </g>
+  <g fill="#584734" opacity="0.5">
+    <ellipse cx="60" cy="238" rx="6" ry="3"/>
+    <ellipse cx="118" cy="248" rx="5" ry="2.5"/>
+    <ellipse cx="90" cy="196" rx="4" ry="2"/>
+  </g>
+</svg>
