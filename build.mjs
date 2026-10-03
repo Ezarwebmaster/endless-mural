@@ -70,7 +70,14 @@ function readCommit(sha) {
   const added = changes.length === 1 && changes[0].status === 'A' ? parseTile(changes[0].path) : null
   if (!problems.length && added) problems.push(...svgProblems(git('show', `${sha}:${changes[0].path}`), season))
   const lines = message.trim().split('\n')
-  const tail = lines.findIndex(l => /^(Model|Capsule):/.test(l))
+  // What `npm test` gave when the platform played the step (LLM TimeMachine
+  // 1.132.0 and later write these lines; older steps have none).
+  const trailer = key => lines.find(l => l.startsWith(`${key}:`))?.slice(key.length + 1).trim() || null
+  const checks = trailer('Checks')
+  if (trailer('Broken') === 'yes' || checks === 'failed' || checks === 'timed out') {
+    problems.unshift(`npm test ${checks === 'timed out' ? 'timed out' : 'failed'} when LLM TimeMachine played this step`)
+  }
+  const tail = lines.findIndex(l => /^(Model|Capsule|Checks|Broken):/.test(l))
   const changelog = lines.slice(1, tail === -1 ? undefined : tail).join('\n').trim()
   const numstat = git('diff-tree', '--root', '--no-commit-id', '-r', '--numstat', sha).split('\n').filter(Boolean)
   return (commits[sha] = {
