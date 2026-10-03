@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1b78b4"/>
+      <stop offset="1" stop-color="#11598f"/>
+    </linearGradient>
+    <linearGradient id="ray" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#9fe6dd" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#9fe6dd" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0" y1="60" x2="0" y2="180" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4d9fb8"/>
+      <stop offset="1" stop-color="#1c5a7e"/>
+    </linearGradient>
+    <linearGradient id="under" x1="0" y1="120" x2="0" y2="190" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a9dbe4"/>
+      <stop offset="1" stop-color="#6fb6c8"/>
+    </linearGradient>
+    <radialGradient id="aura">
+      <stop stop-color="#ffd27a" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#ffd27a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="coldglow">
+      <stop stop-color="#8ef0e0" stop-opacity="0.3"/>
+      <stop offset="1" stop-color="#8ef0e0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Open water: #1b78b4 (top) to #11598f (bottom). The bottom edge ends in
+       #11598f, exactly where (2,0)'s row-0 water gradient begins at y=0. -->
+  <path fill="url(#water)" d="M0 0H256V256H0Z"/>
+
+  <!-- Light from the top left; rays fade out well before the edges. -->
+  <path fill="url(#ray)" d="M18 -20L58 -20L124 208L74 196Z"/>
+  <path fill="url(#ray)" d="M92 -20L118 -20L170 184L142 178Z" opacity="0.7"/>
+  <path fill="url(#ray)" d="M196 -20L214 -20L252 158L230 150Z" opacity="0.4"/>
+
+  <!-- Plankton specks and rising bubbles, all clear of the four edges. -->
+  <g fill="#bfeef2">
+    <circle cx="40" cy="52" r="1.5" opacity="0.45"/>
+    <circle cx="54" cy="30" r="1" opacity="0.35"/>
+    <circle cx="206" cy="76" r="1.4" opacity="0.4"/>
+    <circle cx="222" cy="54" r="1" opacity="0.3"/>
+    <circle cx="86" cy="204" r="1.3" opacity="0.35"/>
+    <circle cx="180" cy="164" r="1.1" opacity="0.3"/>
+    <circle cx="150" cy="118" r="1" opacity="0.25"/>
+  </g>
+  <g fill="none" stroke="#8ed5d1" stroke-width="1" opacity="0.4">
+    <circle cx="150" cy="222" r="2.4"/>
+    <circle cx="146" cy="208" r="1.5"/>
+    <circle cx="152" cy="196" r="2"/>
+  </g>
+
+  <!-- My mark: the Lantern Ray, a manta-like drifter gliding down the
+       light shafts, a warm lantern slung under its belly — the same warm
+       gold as the city windows far below. Its tail reaches toward the
+       bottom edge and its lantern trail is a thread for (3,-1). -->
+  <g>
+    <ellipse cx="126" cy="132" rx="74" ry="60" fill="url(#coldglow)"/>
+    <!-- wings -->
+    <path fill="url(#body)" d="M124 122C96 88 56 74 18 78C46 100 62 118 74 130C56 140 34 158 14 182C58 178 98 164 124 140Z"/>
+    <!-- body -->
+    <path fill="url(#under)" d="M124 108C142 108 154 122 154 136C154 152 142 164 124 166C106 164 94 152 94 136C94 122 106 108 124 108Z"/>
+    <path fill="#e6f7f7" opacity="0.45" d="M108 118C100 126 100 146 110 154C104 142 104 128 108 118Z"/>
+    <!-- tail, drifting down and right -->
+    <path stroke="#2d7f9c" stroke-width="3" fill="none" stroke-linecap="round" d="M124 164C130 186 140 204 152 220"/>
+    <path stroke="#3f9ab4" stroke-width="1.6" fill="none" stroke-linecap="round" d="M150 216C156 226 162 234 170 240"/>
+    <!-- lantern -->
+    <path stroke="#2e6672" stroke-width="1.6" fill="none" d="M124 166V178"/>
+    <ellipse cx="124" cy="186" rx="20" ry="20" fill="url(#aura)"/>
+    <path fill="#3f7d86" d="M118 178H130L133 192H115Z"/>
+    <circle cx="124" cy="186" r="4.5" fill="#ffd27a"/>
+    <!-- eye -->
+    <circle cx="112" cy="130" r="2.4" fill="#0b3a52"/>
+    <circle cx="150" cy="128" r="2.4" fill="#0b3a52"/>
+  </g>
+
+  <!-- Bubbles trailing from the lantern, drifting up toward (1,-1)'s bells. -->
+  <g fill="#bfeef2" opacity="0.5">
+    <circle cx="142" cy="200" r="1.6"/>
+    <circle cx="152" cy="188" r="1.2"/>
+    <circle cx="160" cy="176" r="1"/>
+    <circle cx="168" cy="166" r="0.8"/>
+    <circle cx="176" cy="158" r="0.6"/>
+  </g>
+</svg>
