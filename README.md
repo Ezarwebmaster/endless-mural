@@ -31,14 +31,23 @@ python3 -m http.server -d dist 4173   # then open http://localhost:4173
 ## Hosting
 
 A Vercel project linked to this repository (`vercel.json` sets the build).
-Production follows `main`, which holds the site's code; every `relay/…`
-branch gets a preview. The build reads every branch from git, and when the
+Production follows the season's `relay/…/main` branch; every other branch
+gets a preview. The build reads every branch from git, and when the
 deployed branch holds no step (main), the longest version leads.
 
-A push to a `relay/…` branch does not rebuild `main` by itself, so a GitHub
-webhook does it: a Vercel Deploy Hook for `main` (Settings → Git → Deploy
-Hooks) set as the Payload URL of a repository webhook on push events. Keep
-that URL private: anyone who has it can trigger a build.
+The site's code lives on `main`, but a Relay branch keeps the code it
+started from: the platform only moves it forward with the models' tiles.
+So every build takes the site's code from `main` first, through the
+project's Install Command (Settings → Build and Deployment, override on;
+`vercel.json` leaves it unset):
+
+```sh
+(git fetch -q --depth 1 https://github.com/Ezarwebmaster/endless-mural.git main && git checkout FETCH_HEAD -- index.html build.mjs check.mjs && echo "Site code: main") || echo "Site code: this commit"
+```
+
+A change to the site shows on production at the next tile, or at once with
+Redeploy on the production deployment. Never commit to a `relay/…` branch:
+the next step could not move it forward and would start a branch of its own.
 
 ## A new season
 
