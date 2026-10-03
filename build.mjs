@@ -97,19 +97,29 @@ let branches = [...refs.map(ref => ({ ref, name: branchName(ref) })), { ref: 'HE
   return { name, steps }
 })
 // One entry per name (a local and a fetched copy: the further one, since
-// branches only move forward), then drop a branch whose steps are a prefix of
-// another's (a pull-request branch, or a line that another one continued).
+// branches only move forward). Then drop a branch that another one simply
+// continues (a pull-request branch, or a line painted further), unless what
+// comes after broke a rule: a broken step gets a branch of its own, and the
+// line it left must stay visible. Of two branches with the same steps, keep
+// the Relay's main line.
 const byName = new Map()
 for (const b of branches) if (!byName.has(b.name) || b.steps.length > byName.get(b.name).steps.length) byName.set(b.name, b)
 branches = [...byName.values()]
 const prefixOf = (a, b) => a.steps.length < b.steps.length && a.steps.every((s, i) => b.steps[i] === s)
 const same = (a, b) => a.steps.length === b.steps.length && a.steps.every((s, i) => b.steps[i] === s)
-// The deployed branch leads, unless it holds no step: main, which carries the
-// site's code while the Relay paints on relay/* branches. The longest version
-// leads then.
-const lead = branches.find(b => b.name === current && b.steps.length) ?? null
-branches = branches.filter(b => b === lead || !branches.some(o =>
-  o !== b && (prefixOf(b, o) || (same(b, o) && (o === lead || o.name < b.name)))))
+const continues = (a, b) => prefixOf(a, b) && b.steps.slice(a.steps.length).every(s => commits[s]?.passed)
+const isMain = b => /(^|\/)main$/.test(b.name)
+const preferred = (o, b) => (isMain(o) && !isMain(b)) || (isMain(o) === isMain(b) && o.name < b.name)
+// The deployed branch leads when it holds steps (the preview of a branch
+// shows that branch). Production builds main, which holds none: the version
+// whose last step is the latest one that kept to the rules leads then, the
+// one being painted on.
+const deployed = branches.find(b => b.name === current && b.steps.length) ?? null
+branches = branches.filter(b => b === deployed || !branches.some(o =>
+  o !== b && (continues(b, o) || (same(b, o) && (o === deployed || preferred(o, b))))))
+const tip = b => commits[b.steps.at(-1)]
+const lead = deployed ?? branches.filter(b => b.steps.length && tip(b)?.passed)
+  .sort((a, b) => Date.parse(tip(b).date) - Date.parse(tip(a).date) || b.steps.length - a.steps.length)[0] ?? null
 branches.sort((a, b) => (a === lead ? -1 : b === lead ? 1 : b.steps.length - a.steps.length || a.name.localeCompare(b.name)))
 
 for (const f of ['index.html', 'season.json']) cpSync(f, `${OUT}/${f}`)
