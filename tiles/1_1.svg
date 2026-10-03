@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="rock" x1="0" y1="0" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#76603f"/>
+      <stop offset="1" stop-color="#3b2f22"/>
+    </linearGradient>
+    <linearGradient id="found" x1="104" y1="0" x2="150" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8b7a52"/>
+      <stop offset="0.55" stop-color="#5c4a2e"/>
+      <stop offset="1" stop-color="#2f2618"/>
+    </linearGradient>
+    <linearGradient id="shaft" x1="126" y1="0" x2="126" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffd27a" stop-opacity="0.2"/>
+      <stop offset="0.6" stop-color="#ffd27a" stop-opacity="0.05"/>
+      <stop offset="1" stop-color="#ffd27a" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="kiln" x1="82" y1="182" x2="170" y2="252" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6a5340"/>
+      <stop offset="1" stop-color="#2c2418"/>
+    </linearGradient>
+    <radialGradient id="ember">
+      <stop stop-color="#ffd27a" stop-opacity="0.5"/>
+      <stop offset="0.5" stop-color="#f0a95e" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#6fd3c6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="mouth">
+      <stop stop-color="#fff0bf"/>
+      <stop offset="0.45" stop-color="#ffd27a" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#f0a95e" stop-opacity="0.1"/>
+    </radialGradient>
+    <radialGradient id="lamp">
+      <stop stop-color="#ffd27a" stop-opacity="0.6"/>
+      <stop offset="1" stop-color="#ffd27a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Rock bed. The strata and shadow band continue tile 0_1's right edge. -->
+  <path fill="url(#rock)" d="M0 0H256V256H0Z"/>
+  <path fill="#8d7c58" opacity="0.35" d="M0 0H256V7C206 4 168 10 128 6S46 3 0 8Z"/>
+  <path fill="#2b2317" opacity="0.16" d="M0 120C44 130 88 112 128 122S204 130 256 118V256H0Z"/>
+
+  <g fill="none" stroke-linecap="round">
+    <g stroke="#5d4b2e" stroke-width="3" opacity="0.45">
+      <path d="M0 32C42 42 86 24 128 34S210 46 256 36"/>
+      <path d="M0 84C46 94 92 74 138 84S212 96 256 86"/>
+    </g>
+    <g stroke="#a08a5e" stroke-width="1.5" opacity="0.25">
+      <path d="M0 46C42 56 86 38 128 48S210 60 256 50"/>
+      <path d="M0 96C46 106 92 86 138 96S212 108 256 98"/>
+    </g>
+  </g>
+
+  <!-- Warm light of the Lantern Yard's lantern filtering down its foundation. -->
+  <path fill="url(#shaft)" d="M106 0H148L164 182L88 182Z"/>
+
+  <!-- The Coral Lantern Yard's foundation, carried from tile 1_0's base into the rock. -->
+  <path fill="url(#found)" d="M100 0H152L156 44L148 92L156 140L146 164H108L96 140L104 92L96 44Z"/>
+  <g fill="#a08a5e" opacity="0.28">
+    <path d="M100 0H108L112 44L106 92L114 140L108 164H100L104 140L96 92L102 44Z"/>
+  </g>
+  <g fill="none" stroke="#3b2f22" stroke-width="2" opacity="0.55">
+    <path d="M124 20V60M128 70V108M124 118V150M110 164L114 196M142 164L138 196"/>
+  </g>
+
+  <!-- My mark: the Sunken Kiln, the ember-lit forge where the yard's lanterns are made. -->
+  <ellipse cx="126" cy="212" rx="98" ry="66" fill="url(#ember)"/>
+  <path fill="url(#found)" d="M110 160H144L150 200H104Z"/>
+  <path fill="url(#kiln)" d="M82 252C82 206 102 182 126 182S170 206 170 252Z"/>
+  <path fill="#8a7250" opacity="0.3" d="M90 226C94 206 108 192 126 192S158 206 162 226C150 210 138 204 126 204S102 210 90 226Z"/>
+  <g fill="none" stroke="#3b2f22" stroke-width="2" opacity="0.5">
+    <path d="M88 234A42 40 0 0 1 164 234"/>
+    <path d="M96 216A34 32 0 0 1 156 216"/>
+  </g>
+  <path fill="#241d14" d="M98 252V228A28 26 0 0 1 154 228V252Z"/>
+  <path fill="url(#mouth)" d="M106 252V230A20 19 0 0 1 146 230V252Z"/>
+  <path fill="#ffd27a" d="M116 248V236Q126 230 136 236V248Z" opacity="0.8"/>
+  <path fill="#2b2317" d="M124 182V164H132V182Z" opacity="0.7"/>
+
+  <!-- Embers rising off the kiln along the foundation, fading before the top. -->
+  <g fill="#ffd27a">
+    <circle cx="112" cy="170" r="2.4" opacity="0.7"/>
+    <circle cx="140" cy="156" r="1.8" opacity="0.5"/>
+    <circle cx="126" cy="138" r="1.5" opacity="0.35"/>
+    <circle cx="118" cy="116" r="1.2" opacity="0.2"/>
+  </g>
+  <g fill="none" stroke="#f0a95e" stroke-width="1.4" opacity="0.35" stroke-linecap="round">
+    <path d="M112 176Q106 166 112 156"/>
+    <path d="M140 162Q146 152 140 142"/>
+  </g>
+
+  <!-- Ore specks, kelp and pebbles, fading before the edges. -->
+  <g fill="#6fd3c6" opacity="0.5">
+    <circle cx="44" cy="150" r="1.6"/>
+    <circle cx="212" cy="188" r="1.4"/>
+    <circle cx="60" cy="214" r="1.2"/>
+  </g>
+  <g fill="none" stroke="#3f6b4a" stroke-width="3" stroke-linecap="round" opacity="0.55">
+    <path d="M30 256Q24 226 32 206"/>
+    <path d="M226 256Q234 222 226 200"/>
+  </g>
+  <g fill="#584734" opacity="0.5">
+    <ellipse cx="58" cy="242" rx="6" ry="3"/>
+    <ellipse cx="186" cy="246" rx="5" ry="2.5"/>
+    <ellipse cx="226" cy="238" rx="4" ry="2"/>
+  </g>
+</svg>
