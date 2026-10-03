@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="rock" x1="0" y1="0" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#76603f"/>
+      <stop offset="1" stop-color="#3b2f22"/>
+    </linearGradient>
+    <linearGradient id="door" x1="76" y1="126" x2="146" y2="196" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6a8c86"/>
+      <stop offset="1" stop-color="#2b4a50"/>
+    </linearGradient>
+    <radialGradient id="tunnel">
+      <stop stop-color="#ffd27a" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#6fd3c6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="moonlight">
+      <stop stop-color="#bff5e8" stop-opacity="0.85"/>
+      <stop offset="0.4" stop-color="#6ae2cb" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#6ae2cb" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="fishlight" cx="0.5" cy="0.5" r="0.5">
+      <stop stop-color="#ffd27a" stop-opacity="0.7"/>
+      <stop offset="1" stop-color="#ffd27a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <path fill="url(#rock)" d="M0 0H256V256H0Z"/>
+
+  <!-- Rock strata continued from tile -1_1's left edge (y=34, 46, 84, 96) -->
+  <g fill="none" stroke-linecap="round">
+    <g stroke="#5d4b2e" stroke-width="3" opacity="0.45">
+      <path d="M256 34C206 44 160 28 118 36S50 26 0 34"/>
+      <path d="M256 84C212 94 170 76 128 86S50 78 0 88"/>
+    </g>
+    <g stroke="#a08a5e" stroke-width="1.5" opacity="0.25">
+      <path d="M256 46C206 54 170 40 128 48S50 42 0 50"/>
+      <path d="M256 96C212 106 170 90 128 98S50 92 0 100"/>
+    </g>
+  </g>
+
+  <!-- Deep shadow band continued from tile -1_1 (starts at y=118 on the right edge) -->
+  <path fill="#2b2317" opacity="0.18" d="M256 118C204 108 150 124 110 116S40 108 0 114V256H256Z"/>
+
+  <!-- Faint glow of the lantern-fish's passing, fading before the right edge -->
+  <ellipse cx="236" cy="136" rx="46" ry="34" fill="url(#tunnel)" opacity="0.6"/>
+
+  <!-- My mark: the Moon-Gate, a round stone door buried in the rock, ajar and breathing turquoise light -->
+  <g>
+    <ellipse cx="110" cy="162" rx="84" ry="76" fill="url(#moonlight)" opacity="0.5"/>
+    <circle cx="110" cy="162" r="44" fill="#2b2317" opacity="0.5"/>
+    <circle cx="110" cy="162" r="40" fill="url(#door)"/>
+    <circle cx="110" cy="162" r="40" fill="none" stroke="#a9d8cc" stroke-width="2" opacity="0.6"/>
+    <circle cx="110" cy="162" r="30" fill="none" stroke="#1b3a40" stroke-width="2" opacity="0.7"/>
+    <!-- the gap: the door has rolled aside, revealing a lit chamber -->
+    <path fill="#0f2b33" d="M118 128A40 40 0 0 1 118 196A52 52 0 0 0 118 128Z"/>
+    <path fill="url(#moonlight)" d="M118 130A38 38 0 0 1 118 194A50 50 0 0 0 118 130Z"/>
+    <!-- carved spiral, a nautilus glyph -->
+    <path fill="none" stroke="#1b3a40" stroke-width="2.5" stroke-linecap="round" d="M104 162C104 156 114 154 116 162C118 172 100 176 94 164C88 150 106 140 120 148"/>
+    <circle cx="94" cy="164" r="2.2" fill="#ffd27a"/>
+    <!-- light vein climbing toward the sand above, fading before the top -->
+    <path fill="none" stroke="#6ae2cb" stroke-width="1.5" stroke-linecap="round" opacity="0.45" d="M110 122C108 104 118 92 114 76"/>
+    <path fill="none" stroke="#6ae2cb" stroke-width="1" stroke-linecap="round" opacity="0.25" d="M114 76C112 66 118 60 116 54"/>
+  </g>
+
+  <!-- A pair of little lantern-fish drawn toward the gate -->
+  <g>
+    <circle cx="190" cy="150" r="10" fill="url(#fishlight)"/>
+    <ellipse cx="186" cy="150" rx="7" ry="3.5" fill="#2d6d78"/>
+    <path fill="#2d6d78" d="M193 150L199 146V154Z"/>
+    <circle cx="181" cy="149" r="1.2" fill="#ffd27a"/>
+    <path fill="none" stroke="#8fd6cc" stroke-width="1" d="M186 146V142Q188 140 190 141"/>
+    <circle cx="190" cy="141" r="1.5" fill="#ffd27a"/>
+    <circle cx="206" cy="172" r="8" fill="url(#fishlight)"/>
+    <ellipse cx="203" cy="172" rx="5.5" ry="2.8" fill="#2d6d78"/>
+    <path fill="#2d6d78" d="M208 172L213 169V175Z"/>
+    <circle cx="199" cy="171" r="1" fill="#ffd27a"/>
+    <circle cx="203" cy="165" r="1.2" fill="#ffd27a"/>
+  </g>
+
+  <!-- Ore specks and pebbles -->
+  <g fill="#6fd3c6" opacity="0.5">
+    <circle cx="40" cy="196" r="1.8"/>
+    <circle cx="176" cy="206" r="1.5"/>
+    <circle cx="52" cy="140" r="1.4"/>
+  </g>
+  <g fill="#584734" opacity="0.5">
+    <ellipse cx="60" cy="244" rx="6" ry="3"/>
+    <ellipse cx="150" cy="248" rx="5" ry="2.5"/>
+    <ellipse cx="214" cy="240" rx="4" ry="2"/>
+  </g>
+</svg>
