@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#11598f"/>
+      <stop offset="1" stop-color="#0a3d66"/>
+    </linearGradient>
+    <linearGradient id="sand" x1="0" y1="204" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#b8996a"/>
+      <stop offset="1" stop-color="#76603f"/>
+    </linearGradient>
+    <linearGradient id="depth" x1="0" y1="0" x2="120" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0a3d66" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#0a3d66" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="stone" x1="90" y1="120" x2="132" y2="204" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4b8f9a"/>
+      <stop offset="1" stop-color="#164b60"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="30" y1="0" x2="120" y2="200" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#91e4dd" stop-opacity="0"/>
+      <stop offset="0.35" stop-color="#91e4dd" stop-opacity="0.07"/>
+      <stop offset="1" stop-color="#91e4dd" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="warm">
+      <stop stop-color="#ffd27a" stop-opacity="0.62"/>
+      <stop offset="0.45" stop-color="#f0a95e" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#f0a95e" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="veinGlow">
+      <stop stop-color="#6ae2cb" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#6ae2cb" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Open water of row 0; the bottom of the gradient meets the rock of -2_1 exactly (#76603f under the sand). -->
+  <path fill="url(#water)" d="M0 0H256V256H0Z"/>
+  <path fill="url(#depth)" d="M0 0H256V256H0Z"/>
+  <path fill="url(#beam)" d="M4 0L40 0L128 190L76 190Z"/>
+
+  <!-- Far skyline, kept faint so the row-0 water keeps its depth. -->
+  <g fill="#0b4264" opacity="0.5">
+    <path d="M150 206V176L158 162L166 176V206Z"/>
+    <path d="M157 162V152H161V162Z"/>
+    <path d="M196 206V182H216V206H210V192A4 4 0 0 0 202 192V206Z"/>
+    <path d="M220 206V170L226 158L232 170V206Z"/>
+  </g>
+  <g fill="#66b4b8" opacity="0.18">
+    <path d="M156 180H160V194H156ZM202 190H206V200H202ZM224 176H228V192H224Z"/>
+  </g>
+
+  <!-- Sand: the top line meets the right edge at y=204, continuing (-1,0)'s seabed,
+       and meets the left edge flatly; the bottom (y=256) is #76603f, the rock of -2_1. -->
+  <path fill="url(#sand)" d="M0 204C26 203 52 208 84 207S140 201 172 203S226 208 256 204V256H0Z"/>
+  <ellipse cx="120" cy="212" rx="46" ry="7" fill="#655b49" opacity="0.28"/>
+
+  <!-- Moon-Gate vein of -2_1 (its light vein ends at x=110..116, y=256): continued up through the sand. -->
+  <ellipse cx="113" cy="238" rx="30" ry="22" fill="url(#veinGlow)" opacity="0.7"/>
+  <path fill="none" stroke="#6ae2cb" stroke-width="1.6" stroke-linecap="round" opacity="0.5" d="M111 256C110 246 116 238 114 228"/>
+  <path fill="none" stroke="#6ae2cb" stroke-width="1" stroke-linecap="round" opacity="0.28" d="M114 228C112 220 117 215 115 208"/>
+
+  <!-- The Wayfarer's Steps: a short carved stair running down into the sand,
+       a shrine-pier that descends past the tile's lower edge. -->
+  <g>
+    <path fill="#123e53" d="M86 208L104 208L112 232L78 232Z"/>
+    <path fill="#164b60" d="M80 232L116 232L122 244L74 244Z"/>
+    <path fill="#1c5866" d="M74 244L122 244L128 256L68 256Z"/>
+    <path fill="none" stroke="#286777" stroke-width="1.6" opacity="0.9" d="M86 208L80 232L74 244M104 208L112 232L122 244"/>
+    <path fill="#0f3b4c" opacity="0.35" d="M98 208H104L112 232H104Z"/>
+    <path fill="none" stroke="#8fd6cc" stroke-width="1" opacity="0.3" d="M88 216H106M84 240H120M76 250H124"/>
+  </g>
+
+  <!-- My mark: the Cairn-Lamp of the Wayfarer, a stacked stone cairn carrying a
+       lit glass lantern, with its hermit-crab keeper. A thread for a future tile. -->
+  <g>
+    <ellipse cx="52" cy="150" rx="42" ry="40" fill="url(#warm)"/>
+    <path fill="#123f55" d="M34 206H70V209H34Z"/>
+    <path fill="#4b8f9a" d="M37 206C37 192 67 192 67 206Z"/>
+    <path fill="#2d6b78" d="M40 186C40 176 64 176 64 186Z"/>
+    <path fill="#164b60" d="M39 186C39 172 65 172 65 186Z"/>
+    <path fill="#3f8189" d="M42 160C42 148 62 148 62 160Z"/>
+    <path fill="#1f5b68" d="M44 140H60V162H44Z"/>
+    <path fill="#286777" d="M43 137H61V141H43Z"/>
+    <!-- the glass lantern -->
+    <path fill="#ffd27a" opacity="0.9" d="M47 112H57V136H47Z"/>
+    <path fill="#fff4c7" d="M49 114H53V134H49Z"/>
+    <path fill="#f0a95e" d="M46 110H58V113H46Z"/>
+    <path fill="#f0a95e" d="M46 135H58V138H46Z"/>
+    <path stroke="#123f55" stroke-width="1.4" d="M52 110V104"/>
+    <path fill="none" stroke="#123f55" stroke-width="1.6" d="M48 104Q52 98 56 104"/>
+    <path fill="none" stroke="#ffd27a" stroke-width="0.9" opacity="0.55" d="M52 106V116"/>
+    <!-- the keeper: a hermit crab in a shell, watching the gate below -->
+    <g>
+      <path fill="#d98778" d="M84 200C84 192 96 192 96 200C96 205 92 208 88 208C85 207 84 204 84 200Z"/>
+      <path fill="none" stroke="#d98778" stroke-width="1.4" stroke-linecap="round" d="M90 206L86 212M92 206L96 212"/>
+      <path fill="#c2705f" d="M80 198C80 188 94 186 96 194C97 199 92 202 87 201C83 201 80 200 80 198Z"/>
+      <path fill="none" stroke="#f0a95e" stroke-width="1" opacity="0.8" d="M84 190Q90 193 94 191"/>
+      <circle cx="94" cy="196" r="1.2" fill="#ffd27a"/>
+      <path stroke="#ffd27a" stroke-width="1.4" fill="none" d="M98 196L102 193M98 198L103 199"/>
+    </g>
+  </g>
+
+  <!-- Sand flora and pebbles, fading out before the edges. -->
+  <g fill="none" stroke-linecap="round">
+    <g stroke="#216e70" stroke-width="3">
+      <path d="M148 214Q140 198 146 186M142 199L134 191M141 194L149 186"/>
+    </g>
+    <g stroke="#d98778" stroke-width="2.5">
+      <path d="M214 216L212 200M213 208L207 202M212 204L219 196"/>
+    </g>
+    <g stroke="#d2b486" stroke-width="1" opacity="0.4">
+      <path d="M24 224Q42 218 60 224"/>
+      <path d="M168 232Q190 226 210 231"/>
+    </g>
+  </g>
+  <g fill="#7c7152">
+    <ellipse cx="140" cy="238" rx="4.5" ry="2.2"/>
+    <ellipse cx="228" cy="228" rx="4" ry="2"/>
+  </g>
+
+  <!-- Bubbles rising out of the Cairn-Lamp. -->
+  <g fill="none" stroke="#8ed5d1" stroke-width="1" opacity="0.4">
+    <circle cx="52" cy="88" r="2.2"/>
+    <circle cx="56" cy="72" r="1.4"/>
+    <circle cx="48" cy="58" r="1.8"/>
+  </g>
+</svg>
