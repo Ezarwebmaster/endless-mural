@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#11598f"/>
+      <stop offset="1" stop-color="#0a3d66"/>
+    </linearGradient>
+    <linearGradient id="sand" x1="0" y1="204" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#b8996a"/>
+      <stop offset="1" stop-color="#76603f"/>
+    </linearGradient>
+    <linearGradient id="dome" x1="86" y1="96" x2="150" y2="170" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4d9aa0"/>
+      <stop offset="1" stop-color="#1a5470"/>
+    </linearGradient>
+    <linearGradient id="shaft" x1="0" y1="20" x2="0" y2="170" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#91e4dd" stop-opacity="0"/>
+      <stop offset="0.3" stop-color="#91e4dd" stop-opacity="0.1"/>
+      <stop offset="1" stop-color="#91e4dd" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="aura">
+      <stop stop-color="#6ae2cb" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#6ae2cb" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="lamp">
+      <stop stop-color="#ffd27a" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#ffd27a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Left seam: same water gradient and the same sand line at y=204 as 0_0. -->
+  <path fill="url(#water)" d="M0 0H256V256H0Z"/>
+  <path fill="url(#shaft)" d="M14 26H58L96 172L36 164Z"/>
+  <ellipse cx="132" cy="132" rx="84" ry="90" fill="url(#aura)"/>
+
+  <!-- Distant roofs, kept clear of the right edge so water carries on. -->
+  <g fill="#0b4264" opacity="0.72">
+    <path d="M-2 205V150H6V138H26V150H32V205Z"/>
+    <path d="M186 205V162H194V152H212V162H219V205Z"/>
+    <path d="M224 205V172L237 160L250 172V205Z"/>
+  </g>
+  <g fill="#66b4b8" opacity="0.2">
+    <path d="M8 146H13V172H8ZM16 146H21V172H16Z"/>
+    <path d="M198 158H204V180H198ZM234 176H240V193H234Z"/>
+  </g>
+
+  <path fill="url(#sand)" d="M0 204C22 204 40 198 62 201S104 210 130 205S172 198 197 202S236 204 256 204V256H0Z"/>
+  <ellipse cx="128" cy="213" rx="62" ry="10" fill="#655b49" opacity="0.3"/>
+
+  <!-- My mark: the Coral Lantern Yard, a domed workshop with a hanging lantern. -->
+  <path fill="#123e53" d="M74 208L80 195H168L176 208Z"/>
+  <path fill="url(#dome)" d="M88 128H156V198H88Z"/>
+  <path fill="#123f55" d="M140 130H156V198H140Z"/>
+  <path fill="#63a7a6" d="M88 132H93V195H88Z" opacity="0.65"/>
+  <path fill="#286777" d="M82 125H163V136H82Z"/>
+  <path fill="#79c5bb" d="M82 125H163V128H82Z"/>
+  <path d="M84 124C84 98 100 80 123 80S162 98 162 124Z" fill="#2a7183"/>
+  <g fill="none" stroke="#8bd2c4" stroke-width="1.5" opacity="0.7">
+    <path d="M123 81C109 89 101 104 101 124"/>
+    <path d="M123 81C121 94 120 108 120 124"/>
+    <path d="M123 81C134 90 141 105 142 124"/>
+    <path d="M89 104Q122 92 158 104"/>
+  </g>
+  <g fill="#0b394f">
+    <path d="M99 160V148A6 6 0 0 1 111 148V160Z"/>
+    <path d="M123 160V148A6 6 0 0 1 135 148V160Z"/>
+    <path d="M111 197V178A10 10 0 0 1 131 178V197Z"/>
+  </g>
+  <g fill="#ffd27a">
+    <path d="M102 157V148A3 3 0 0 1 108 148V157Z" opacity="0.85"/>
+    <path d="M126 157V148A3 3 0 0 1 132 148V157Z" opacity="0.6"/>
+    <path d="M115 191V179A6 6 0 0 1 127 179V191Z" opacity="0.85"/>
+  </g>
+  <path stroke="#2e6672" stroke-width="2" fill="none" d="M121 172V192M100 152H110M124 152H134"/>
+  <path fill="#73ada6" d="M93 163H141V166H93Z" opacity="0.55"/>
+  <path fill="#69918b" d="M103 196H139V200H103ZM97 200H145V204H97ZM91 204H151V208H91Z"/>
+
+  <!-- The lantern hanging off the dome, glowing over the yard. -->
+  <path stroke="#2e6672" stroke-width="2" fill="none" d="M123 82V62"/>
+  <ellipse cx="123" cy="70" rx="20" ry="20" fill="url(#lamp)"/>
+  <path fill="#3f7d86" d="M117 64H129L132 78H114Z"/>
+  <circle cx="123" cy="72" r="5" fill="#ffd27a"/>
+
+  <g fill="none" stroke-linecap="round">
+    <g stroke="#216e70" stroke-width="3">
+      <path d="M44 209Q33 194 38 180M38 195L29 187M37 189L46 181"/>
+      <path d="M196 211Q205 196 200 183M203 200L214 190M202 192L192 183"/>
+    </g>
+    <g stroke="#d98778" stroke-width="2.5">
+      <path d="M62 213L59 197M59 204L52 198M59 202L66 194"/>
+      <path d="M185 216L183 204M183 208L190 202"/>
+      <path d="M232 208L229 194M229 201L222 195"/>
+    </g>
+    <g stroke="#d2b486" stroke-width="1" opacity="0.45">
+      <path d="M20 228Q34 224 46 228M70 240Q92 234 110 239M150 226Q170 222 186 226M205 244Q222 240 240 243"/>
+    </g>
+  </g>
+  <g fill="#7c7152">
+    <ellipse cx="28" cy="238" rx="4" ry="2"/>
+    <ellipse cx="152" cy="242" rx="3" ry="1.5"/>
+    <ellipse cx="221" cy="220" rx="5" ry="2"/>
+  </g>
+
+  <g fill="#76c8c6" opacity="0.65">
+    <path d="M170 66Q177 59 185 65Q178 71 170 66L166 62V69Z"/>
+    <path d="M196 82Q202 77 209 82Q202 87 196 82L193 79V85Z"/>
+  </g>
+  <g fill="none" stroke="#8ed5d1" stroke-width="1" opacity="0.4">
+    <circle cx="188" cy="52" r="2"/>
+    <circle cx="212" cy="70" r="1.5"/>
+    <circle cx="176" cy="40" r="1.8"/>
+  </g>
+  <g fill="#8ccfc9" opacity="0.32">
+    <circle cx="30" cy="70" r="1"/>
+    <circle cx="64" cy="110" r="1.2"/>
+    <circle cx="241" cy="104" r="1"/>
+    <circle cx="206" cy="130" r="0.8"/>
+  </g>
+</svg>
