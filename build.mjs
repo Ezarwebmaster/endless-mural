@@ -10,19 +10,12 @@ import { execFileSync } from 'node:child_process'
 import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { changeProblems, parseTile, svgProblems, tileKey } from './check.mjs'
 
-const git = (...args) => execFileSync('git', args, { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 })
+const git = (...args) => execFileSync('git', args, { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] })
 const tryGit = (...args) => { try { return git(...args) } catch { return '' } }
 const season = JSON.parse(readFileSync('season.json', 'utf8'))
 const OUT = 'dist'
 
-// Hosts clone shallow and with one branch: fetch the full history and the others.
-if (tryGit('rev-parse', '--is-shallow-repository').trim() === 'true') tryGit('fetch', '--quiet', '--unshallow')
-tryGit('fetch', '--quiet', 'origin', '+refs/heads/*:refs/remotes/origin/*')
-
-const refs = tryGit('for-each-ref', '--format=%(refname)', 'refs/remotes/origin', 'refs/heads').split('\n')
-  .filter(r => r && !r.endsWith('/HEAD'))
-const branchName = r => r.replace(/^refs\/(remotes\/origin|heads)\//, '')
-const current = process.env.VERCEL_GIT_COMMIT_REF || tryGit('rev-parse', '--abbrev-ref', 'HEAD').trim() || 'main'
+const ok = (...args) => { try { git(...args); return true } catch { return false } }
 
 const remote = tryGit('remote', 'get-url', 'origin').trim()
 const fromRemote = remote.match(/github\.com[/:]([^/]+)\/([^/.]+?)(?:\.git)?$/)
@@ -30,6 +23,18 @@ const repo = {
   owner: process.env.VERCEL_GIT_REPO_OWNER || fromRemote?.[1] || null,
   name: process.env.VERCEL_GIT_REPO_SLUG || fromRemote?.[2] || null,
 }
+
+// Hosts clone shallow and with one branch: fetch the full history and the
+// others. When the checkout has no usable origin, the public repo serves.
+const sources = [remote && 'origin', repo.owner && repo.name && `https://github.com/${repo.owner}/${repo.name}.git`].filter(Boolean)
+const shallow = () => tryGit('rev-parse', '--is-shallow-repository').trim() === 'true'
+const source = sources.find(src => ok('fetch', '--quiet', ...(shallow() ? ['--unshallow'] : []), src, '+refs/heads/*:refs/remotes/origin/*'))
+console.log(source ? `Fetched every branch from ${source}.` : 'Could not fetch the other branches: only the checkout is shown.')
+
+const refs = tryGit('for-each-ref', '--format=%(refname)', 'refs/remotes/origin', 'refs/heads').split('\n')
+  .filter(r => r && !r.endsWith('/HEAD'))
+const branchName = r => r.replace(/^refs\/(remotes\/origin|heads)\//, '')
+const current = process.env.VERCEL_GIT_COMMIT_REF || tryGit('rev-parse', '--abbrev-ref', 'HEAD').trim() || 'main'
 
 rmSync(OUT, { recursive: true, force: true })
 mkdirSync(`${OUT}/t`, { recursive: true })
@@ -99,9 +104,13 @@ for (const b of branches) if (!byName.has(b.name) || b.steps.length > byName.get
 branches = [...byName.values()]
 const prefixOf = (a, b) => a.steps.length < b.steps.length && a.steps.every((s, i) => b.steps[i] === s)
 const same = (a, b) => a.steps.length === b.steps.length && a.steps.every((s, i) => b.steps[i] === s)
-branches = branches.filter(b => b.name === current || !branches.some(o =>
-  o !== b && (prefixOf(b, o) || (same(b, o) && (o.name === current || o.name < b.name)))))
-branches.sort((a, b) => (a.name === current ? -1 : b.name === current ? 1 : b.steps.length - a.steps.length))
+// The deployed branch leads, unless it holds no step: main, which carries the
+// site's code while the Relay paints on relay/* branches. The longest version
+// leads then.
+const lead = branches.find(b => b.name === current && b.steps.length) ?? null
+branches = branches.filter(b => b === lead || !branches.some(o =>
+  o !== b && (prefixOf(b, o) || (same(b, o) && (o === lead || o.name < b.name)))))
+branches.sort((a, b) => (a === lead ? -1 : b === lead ? 1 : b.steps.length - a.steps.length || a.name.localeCompare(b.name)))
 
 for (const f of ['index.html', 'season.json']) cpSync(f, `${OUT}/${f}`)
 const used = new Set(branches.flatMap(b => b.steps))

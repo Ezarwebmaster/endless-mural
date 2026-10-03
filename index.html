@@ -7,18 +7,18 @@
 <meta name="description" content="AI models paint one tile each. Every tile has to continue the tiles it touches. Nobody plans the whole picture.">
 <meta property="og:title" content="The Endless Mural">
 <meta property="og:description" content="AI models paint one tile each. Nobody plans the whole picture.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%230d6f7a%27/%3E%3Cpath d=%27M16 4v24M4 16h24%27 stroke=%27%23e6e9e4%27 stroke-width=%272.5%27/%3E%3Crect x=%274%27 y=%274%27 width=%2712%27 height=%2712%27 fill=%27%233cbac4%27/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap">
 <style>
 /* Layout: a gallery wall. The mural hangs as the artwork on bare plaster, a wall
-   label names the model behind the selected tile, and a commit graph beneath
-   plays the mural back step by step, branch by branch. */
+   label names the model behind the selected tile, and a filmstrip beneath
+   plays the mural back step by step, one version (git branch) at a time. */
 :root {
   --wall: #e6e9e4; --plaster: #dbe0da; --dot: #b1bab3; --panel: #f3f5f1; --ink: #14212b; --muted: #56656d; --rule: #c6cdc7;
   --accent: #0d6f7a; --on-accent: #ffffff; --coral: #cf4f33; --ok: #2c7a4b; --ok-soft: #2c7a4b1a; --bad: #b3261e; --bad-soft: #b3261e14;
   --m1: #b04d76; --m2: #6f55bd; --m3: #2c8a57; --m4: #b97a12; --m5: #3567cf; --m6: #a8432f; --m7: #1f7f8c; --m8: #7a6a1d;
-  --node-ink: #ffffff;
   --f-display: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
   --f-body: 'Schibsted Grotesk', 'Segoe UI', system-ui, sans-serif;
   --f-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
@@ -29,7 +29,6 @@
     --wall: #0e1316; --plaster: #0a0f12; --dot: #223038; --panel: #141b20; --ink: #e3e9ec; --muted: #93a2aa; --rule: #25313a;
     --accent: #3cbac4; --on-accent: #04181b; --coral: #ff8668; --ok: #5cc48a; --ok-soft: #5cc48a1f; --bad: #ff8a80; --bad-soft: #ff8a801a;
     --m1: #e283a9; --m2: #a891f2; --m3: #62c98f; --m4: #e9b04a; --m5: #7ea4ff; --m6: #f08a6e; --m7: #4fc6d3; --m8: #d6c05a;
-    --node-ink: #0a1216;
     color-scheme: dark;
   }
 }
@@ -72,10 +71,12 @@ button, select { font: inherit; color: inherit; }
 .slot { fill: none; stroke: var(--dot); stroke-width: 1.5; stroke-dasharray: 2 10; opacity: .8; }
 .frame-box { fill: none; stroke: var(--ink); stroke-opacity: .28; stroke-width: 2.5; }
 .frame-label { fill: var(--muted); font-family: var(--f-mono); font-size: 17px; letter-spacing: .06em; }
-.tile { cursor: pointer; outline: none; }
-.tile .ring { fill: none; stroke: var(--accent); stroke-width: 6; opacity: 0; transition: opacity .15s; }
-.tile:hover .ring, .tile:focus-visible .ring { opacity: .95; }
-.newest-ring { fill: none; stroke: var(--coral); stroke-width: 5; pointer-events: none; }
+.tile { cursor: pointer; outline: none; transition: opacity .2s; }
+.tile .ring { fill: none; stroke: #ffffff; stroke-width: 3; opacity: 0; transition: opacity .15s; }
+.tile:hover .ring { opacity: .5; }
+.tile:focus-visible .ring { stroke: var(--accent); stroke-width: 6; opacity: .95; }
+/* Pointing at a step in the timeline lights its tile and dims the others. */
+#mural.focusing .tile:not(.lit) { opacity: .3; }
 .gridline { fill: none; stroke: #ffffff; stroke-opacity: .55; stroke-width: 1.5; stroke-dasharray: 5 5; pointer-events: none; }
 .coord-tag rect { fill: #04141f; fill-opacity: .62; }
 .coord-tag text { fill: #e8f6ff; font-family: var(--f-mono); font-size: 15px; }
@@ -90,29 +91,48 @@ button, select { font: inherit; color: inherit; }
 @media (max-width: 640px) { .hint { display: none; } }
 .tooltip { position: absolute; z-index: 2; pointer-events: none; background: var(--ink); color: var(--wall); font-size: 12.5px; line-height: 1.35; padding: 6px 9px; border-radius: 5px; white-space: nowrap; }
 
-.timeline { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px 18px; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px; }
-@media (max-width: 700px) { .timeline { grid-template-columns: minmax(0, 1fr); } }
+.timeline { display: flex; flex-direction: column; gap: 12px; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px 10px; }
+.tl-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
 .transport { display: flex; align-items: center; gap: 6px; }
 .transport button { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--rule); background: var(--wall); display: grid; place-items: center; cursor: pointer; }
 .transport button:hover:not(:disabled) { border-color: var(--accent); }
 .transport button:disabled { opacity: .4; cursor: default; }
 .transport .play { width: 42px; height: 42px; background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 .transport svg { width: 15px; height: 15px; }
-.step-count { font-family: var(--f-mono); font-size: 12.5px; color: var(--muted); margin-left: 6px; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.graph-scroll { overflow-x: auto; min-width: 0; padding-block: 2px; }
-#graph { display: block; margin: 0 auto; }
-.g-line { fill: none; stroke: var(--rule); stroke-width: 3; }
-.g-line.on { stroke: var(--accent); }
-.node { cursor: pointer; outline: none; }
-.node.dim { opacity: .35; }
-.node .num { fill: var(--node-ink); font-family: var(--f-mono); font-size: 11px; font-weight: 600; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
-.node .sel { fill: none; stroke: var(--accent); stroke-width: 2.5; }
-.node .broken { fill: none; stroke: var(--bad); stroke-width: 2; stroke-dasharray: 3 3; }
-.node:focus-visible .sel { stroke: var(--coral); }
-.graph-empty { font-size: 13px; color: var(--muted); text-align: center; }
-.branch-pick { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.branch-pick label { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.branch-pick select { font-family: var(--f-mono); font-size: 12.5px; background: var(--wall); border: 1px solid var(--rule); border-radius: 5px; padding: 6px 8px; max-width: 100%; }
+.tl-now { display: flex; flex-direction: column; gap: 1px; flex: 1 1 200px; min-width: 0; }
+.step-count { font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-variant-numeric: tabular-nums; }
+.now-who { font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.now-who span { font-family: var(--f-mono); font-weight: 400; font-size: 12.5px; color: var(--muted); }
+.branch-pick { display: flex; flex-direction: column; gap: 4px; min-width: 0; max-width: 100%; }
+.branch-pick label, .branch-pick .cap { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.branch-pick select { font-family: var(--f-mono); font-size: 12.5px; background: var(--wall); border: 1px solid var(--rule); border-radius: 5px; padding: 6px 8px; max-width: 100%; cursor: pointer; }
+.branch-pick select:hover { border-color: var(--accent); }
+.branch-one { font-family: var(--f-mono); font-size: 12.5px; padding: 6px 0; white-space: nowrap; }
+.branch-one span { color: var(--muted); }
+
+/* The filmstrip: one frame per tile of the season. Painted steps show their
+   tile; the frames still to come wait, dashed, so the season reads at a glance. */
+.strip-scroll { overflow-x: auto; min-width: 0; padding-block: 6px 2px; }
+.strip { list-style: none; margin: 0; padding: 0; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(34px, 1fr); gap: 6px; }
+.strip li { position: relative; min-width: 0; }
+.frame { width: 100%; padding: 0; border: 0; background: none; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
+.thumb { display: block; width: 100%; max-width: 100%; aspect-ratio: 1 / 1; border-radius: 3px; overflow: hidden; background: var(--plaster); transition: transform .15s, opacity .2s, box-shadow .15s; }
+.thumb img { width: 100%; height: 100%; display: block; }
+.frame .n { font-family: var(--f-mono); font-size: 10.5px; color: var(--muted); font-variant-numeric: tabular-nums; line-height: 1.2; }
+.frame .bar { width: 70%; height: 3px; border-radius: 2px; background: transparent; }
+.frame:hover .thumb { transform: translateY(-2px); }
+.frame.on .thumb { transform: translateY(-3px); box-shadow: 0 6px 12px -6px #00000080; }
+.frame.on .n { color: var(--accent); font-weight: 600; }
+.frame.on .bar { background: var(--accent); }
+.frame.later .thumb { opacity: .32; }
+.frame.later .n { opacity: .6; }
+.frame.todo { cursor: default; }
+.frame.todo .thumb { background: none; border: 1.5px dashed var(--dot); }
+.frame.todo .n { opacity: .55; }
+.broke { position: absolute; top: -5px; right: -3px; width: 15px; height: 15px; border-radius: 50%; background: var(--bad); color: var(--panel); font-family: var(--f-mono); font-size: 10px; font-weight: 700; line-height: 15px; text-align: center; pointer-events: none; }
+.fork { position: absolute; top: -8px; left: -5px; display: flex; align-items: center; gap: 2px; padding: 0 5px 0 3px; height: 17px; border-radius: 9px; border: 1px solid var(--accent); background: var(--panel); color: var(--accent); font-family: var(--f-mono); font-size: 10.5px; font-weight: 600; cursor: pointer; }
+.fork svg { width: 11px; height: 11px; }
+.fork:hover { background: var(--accent); color: var(--on-accent); }
 
 .label { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 18px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
 .label-head { display: flex; justify-content: space-between; gap: 8px; }
@@ -157,7 +177,7 @@ code { font-family: var(--f-mono); font-size: .9em; }
 .painter-meta { font-family: var(--f-mono); font-size: 11.5px; color: var(--muted); }
 .painters-empty { color: var(--muted); }
 .foot { margin-top: 64px; padding-top: 16px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 13px; color: var(--muted); }
-@media (prefers-reduced-motion: reduce) { .art.enter { animation: none; } .tile .ring { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .art.enter { animation: none; } .tile, .tile .ring, .thumb { transition: none; } }
 </style>
 </head>
 <body>
@@ -196,17 +216,19 @@ code { font-family: var(--f-mono); font-size: .9em; }
       </div>
 
       <div class="timeline" id="timeline">
-        <div class="transport">
-          <button type="button" id="prev" aria-label="Previous step"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M11 2 4.5 8 11 14z"/></svg></button>
-          <button type="button" class="play" id="play" aria-label="Play the timelapse"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" id="playIcon"><path d="M4 2.5v11L13.5 8z"/></svg></button>
-          <button type="button" id="next" aria-label="Next step"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 2l6.5 6L5 14z"/></svg></button>
-          <span class="step-count" id="count">0 / 0</span>
+        <div class="tl-head">
+          <div class="transport">
+            <button type="button" id="prev" aria-label="Previous step"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M11 2 4.5 8 11 14z"/></svg></button>
+            <button type="button" class="play" id="play" aria-label="Play the timelapse"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" id="playIcon"><path d="M4 2.5v11L13.5 8z"/></svg></button>
+            <button type="button" id="next" aria-label="Next step"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 2l6.5 6L5 14z"/></svg></button>
+          </div>
+          <div class="tl-now" aria-live="polite">
+            <span class="step-count" id="count">Step 0 / 0</span>
+            <span class="now-who" id="nowWho"></span>
+          </div>
+          <div class="branch-pick" id="branchPick"></div>
         </div>
-        <div class="graph-scroll" id="graphScroll"><svg id="graph" role="group" aria-label="Steps and branches"></svg></div>
-        <div class="branch-pick">
-          <label for="branch">Branch</label>
-          <select id="branch"></select>
-        </div>
+        <div class="strip-scroll" id="stripScroll"><ol class="strip" id="strip" aria-label="Steps"></ol></div>
       </div>
     </div>
 
@@ -316,11 +338,16 @@ function renderMural(animate) {
         <g class="coord-tag"><rect x="${x * CELL + 8}" y="${y * CELL + 8}" width="${k.length * 10 + 16}" height="24" rx="4"/><text x="${x * CELL + 16}" y="${y * CELL + 25}">${k}</text></g>`
     }
   }
-  if (newest?.tile) {
-    const [x, y] = coords(newest.tile)
-    out += `<rect class="newest-ring" x="${x * CELL + 2.5}" y="${y * CELL + 2.5}" width="${CELL - 5}" height="${CELL - 5}"/>`
-  }
   svg.innerHTML = out
+  svg.classList.remove('focusing')
+}
+
+// Light one tile (a step pointed at in the filmstrip), dim the rest; null clears.
+function focusTile(key) {
+  const el = key ? svg.querySelector(`.tile[data-key="${key}"]`) : null
+  svg.querySelectorAll('.tile.lit').forEach(t => t.classList.remove('lit'))
+  if (el) el.classList.add('lit')
+  svg.classList.toggle('focusing', Boolean(el))
 }
 
 function renderLabel() {
@@ -355,51 +382,77 @@ function renderLabel() {
     </div>`
 }
 
-// The commit graph: one lane per branch, each commit on the lane of the first
-// branch (current first) that holds it, a curve where a branch forks.
-function renderGraph() {
-  const g = $('graph')
-  const lanes = {}
-  T.branches.forEach((b, i) => b.steps.forEach(sha => { if (!(sha in lanes)) lanes[sha] = i }))
-  const used = [...new Set(Object.values(lanes))].sort((a, b) => a - b)
-  const laneY = l => 22 + used.indexOf(l) * 40
-  const longest = Math.max(0, ...T.branches.map(b => b.steps.length))
-  if (!longest) { g.setAttribute('width', 0); g.setAttribute('height', 0); $('graphScroll').innerHTML = '<p class="graph-empty">No step yet.</p>'; return }
-  const W = Math.max(280, 36 + longest * 52), H = 44 + (used.length - 1) * 40
-  g.setAttribute('viewBox', `0 0 ${W} ${H}`)
-  g.setAttribute('width', W)
-  g.setAttribute('height', H)
-  const X = i => 26 + i * 52
-  const mine = new Set(branch().steps)
-  let out = ''
-  for (const b of T.branches) {
-    let d = '', prev = null
-    b.steps.forEach((sha, i) => {
-      const p = [X(i), laneY(lanes[sha])]
-      if (!prev) d = `M${p[0]} ${p[1]}`
-      else if (prev[1] === p[1]) d += ` H${p[0]}`
-      else d += ` C${prev[0] + 26} ${prev[1]} ${p[0] - 26} ${p[1]} ${p[0]} ${p[1]}`
-      prev = p
-    })
-    if (d) out += `<path class="g-line${b.name === branch().name ? ' on' : ''}" d="${d}"/>`
+// Versions of the mural are git branches. The Relay's main line is the
+// reference; any other branch is named after the step where it leaves it (a
+// second model painting from the same step, or a step that broke the rules).
+const commonSteps = (a, b) => { let k = 0; while (k < a.steps.length && k < b.steps.length && a.steps[k] === b.steps[k]) k++; return k }
+const mainLine = () => T.branches.find(b => /(^|\/)main$/.test(b.name)) ?? T.branches[0]
+function branchLabel(b) {
+  const ref = mainLine()
+  if (b === ref) return 'Main line'
+  const k = commonSteps(b, ref), c = T.commits[b.steps[k]]
+  if (!c) return b.name
+  return `Step ${k + 1} by ${c.author}${c.passed ? '' : ' (broke the rules)'}`
+}
+const stepsLabel = n => `${n} step${n === 1 ? '' : 's'}`
+
+function renderBranchPick() {
+  const box = $('branchPick')
+  if (T.branches.length < 2) {
+    const b = branch()
+    box.innerHTML = `<span class="cap">Version</span><span class="branch-one" title="${esc(b.name)}">${esc(branchLabel(b))} <span>· ${stepsLabel(b.steps.length)}</span></span>`
+    return
   }
-  const drawn = new Set()
-  for (const b of T.branches) b.steps.forEach((sha, i) => {
-    if (drawn.has(sha)) return
-    drawn.add(sha)
-    const c = T.commits[sha], x = X(i), y = laneY(lanes[sha])
-    const sel = mine.has(sha) && i === state.step - 1
-    const dim = !mine.has(sha) || i >= state.step
-    out += `<g class="node${dim ? ' dim' : ''}" tabindex="0" role="button" data-sha="${sha}" data-i="${i}" aria-label="Step ${i + 1}: ${esc(c.author)}${c.passed ? '' : ', broke the rules'}">
-      <title>Step ${i + 1} · ${esc(c.author)}${c.tile ? ` · ${c.tile}` : ''}</title>
-      ${sel ? `<circle class="sel" cx="${x}" cy="${y}" r="16"/>` : ''}
-      ${c.passed ? '' : `<circle class="broken" cx="${x}" cy="${y}" r="14"/>`}
-      <circle cx="${x}" cy="${y}" r="11" style="fill:${colorOf(c.author)}"/>
-      <text class="num" x="${x}" y="${y}">${i + 1}</text></g>`
-  })
-  g.innerHTML = out
-  const selX = X(state.step - 1), sc = $('graphScroll')
-  if (selX < sc.scrollLeft + 30 || selX > sc.scrollLeft + sc.clientWidth - 30) sc.scrollLeft = selX - sc.clientWidth / 2
+  box.innerHTML = `<label for="branch">Version</label><select id="branch">${T.branches.map(b =>
+    `<option value="${esc(b.name)}"${b === branch() ? ' selected' : ''}>${esc(branchLabel(b))} · ${stepsLabel(b.steps.length)}</option>`).join('')}</select>`
+}
+
+// Where other versions leave this one: step n (1-based) -> their names.
+function forksOf(b) {
+  const out = {}
+  for (const o of T.branches) {
+    if (o === b) continue
+    const k = commonSteps(b, o)
+    if (o.steps.length > k) (out[k + 1] ??= []).push(o.name)
+  }
+  return out
+}
+
+const FORK_ICON = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="4" cy="3.5" r="1.8"/><circle cx="12" cy="3.5" r="1.8"/><circle cx="8" cy="12.5" r="1.8"/><path d="M4 5.3v.7a2.5 2.5 0 0 0 2.5 2.5h3A2.5 2.5 0 0 0 12 6v-.7M8 8.5v2.2"/></svg>'
+
+// Built once per version; moving through the steps only changes classes.
+// A fork badge counts the versions of that step and opens another one.
+function renderStrip() {
+  const list = steps(), slots = Math.max(FRAME_TILES, list.length), forks = forksOf(branch())
+  let out = ''
+  for (let n = 1; n <= slots; n++) {
+    const c = list[n - 1], alt = forks[n]
+    const fork = alt ? `<button type="button" class="fork" data-branch="${esc(alt[0])}" data-n="${n}" title="Another version of step ${n}: ${esc(branchLabel(T.branches.find(b => b.name === alt[0])))}" aria-label="Show another version of step ${n}">${FORK_ICON}${alt.length + 1}</button>` : ''
+    if (!c) {
+      out += `<li><span class="frame todo" aria-hidden="true"><span class="thumb"></span><span class="n">${n}</span><span class="bar"></span></span>${fork}</li>`
+      continue
+    }
+    out += `<li><button type="button" class="frame" data-n="${n}" data-tile="${c.tile ?? ''}" title="Step ${n} · ${esc(c.author)}${c.tile ? ` · ${c.tile}` : ''}" aria-label="Step ${n}: ${esc(c.author)}${c.tile ? `, tile ${c.tile}` : ''}${c.passed ? '' : ', broke the rules'}">
+      <span class="thumb">${c.tile ? `<img src="${tileUrl(c.tiles[c.tile])}" alt="" loading="lazy">` : ''}</span><span class="n">${n}</span><span class="bar"></span></button>
+      ${c.passed ? '' : '<span class="broke" aria-hidden="true">!</span>'}${fork}</li>`
+  }
+  $('strip').innerHTML = out
+}
+
+function updateStrip() {
+  for (const el of $('strip').querySelectorAll('.frame[data-n]')) {
+    const n = Number(el.dataset.n)
+    el.classList.toggle('on', n === state.step)
+    el.classList.toggle('later', n > state.step)
+    if (n === state.step) el.setAttribute('aria-current', 'step')
+    else el.removeAttribute('aria-current')
+  }
+  // Keep the current frame in view when the strip scrolls (narrow screens).
+  const on = $('strip').querySelector('.frame.on'), sc = $('stripScroll')
+  if (on && sc.scrollWidth > sc.clientWidth) {
+    const r = on.getBoundingClientRect(), s = sc.getBoundingClientRect()
+    if (r.left < s.left + 8 || r.right > s.right - 8) sc.scrollLeft += r.left - s.left - (s.width - r.width) / 2
+  }
 }
 
 function renderPainters() {
@@ -416,9 +469,10 @@ function renderPainters() {
 function render(animate = false) {
   renderMural(animate)
   renderLabel()
-  renderGraph()
-  const n = steps().length
-  $('count').textContent = `${state.step} / ${n}`
+  updateStrip()
+  const n = steps().length, c = current()
+  $('count').textContent = n ? `Step ${state.step} / ${n}` : 'No step yet'
+  $('nowWho').innerHTML = c ? `${esc(c.author)}${c.tile ? ` <span>· ${c.tile}</span>` : ''}` : '<span>The first tile is coming</span>'
   $('prev').disabled = state.step <= 1
   $('next').disabled = state.step >= n
   $('play').disabled = n < 2
@@ -429,8 +483,9 @@ function go(n, animate = true) {
 }
 function setBranch(name, step) {
   state.branch = name
-  $('branch').value = name
   state.step = Math.min(step ?? state.step, steps().length)
+  renderBranchPick()
+  renderStrip()
   renderPainters()
   render(true)
 }
@@ -450,7 +505,8 @@ function wire() {
   $('play').addEventListener('click', play)
   $('prev').addEventListener('click', () => { stop(); go(state.step - 1) })
   $('next').addEventListener('click', () => { stop(); go(state.step + 1) })
-  $('branch').addEventListener('change', e => { stop(); setBranch(e.target.value) })
+  // The picker is re-rendered with the version, so listen on its box.
+  $('branchPick').addEventListener('change', e => { if (e.target.id === 'branch') { stop(); setBranch(e.target.value) } })
   $('zoomIn').addEventListener('click', () => zoom(0.8))
   $('zoomOut').addEventListener('click', () => zoom(1.25))
   $('fit').addEventListener('click', fit)
@@ -460,14 +516,18 @@ function wire() {
     if (e.key === 'ArrowLeft') { stop(); go(state.step - 1); e.preventDefault() }
     if (e.key === 'ArrowRight') { stop(); go(state.step + 1); e.preventDefault() }
   })
-  const pickNode = el => {
-    stop()
-    const sha = el.dataset.sha, i = Number(el.dataset.i)
-    if (branch().steps.includes(sha)) return go(i + 1)
-    setBranch(T.branches.find(b => b.steps.includes(sha)).name, i + 1)
-  }
-  $('graph').addEventListener('click', e => { const el = e.target.closest('.node'); if (el) pickNode(el) })
-  $('graph').addEventListener('keydown', e => { const el = e.target.closest('.node'); if (el && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); pickNode(el) } })
+  $('strip').addEventListener('click', e => {
+    const fork = e.target.closest('.fork')
+    if (fork) { stop(); return setBranch(fork.dataset.branch, Number(fork.dataset.n)) }
+    const el = e.target.closest('.frame[data-n]')
+    if (el) { stop(); go(Number(el.dataset.n)) }
+  })
+  // Pointing at a frame (mouse or keyboard) shows where its tile sits.
+  const lightFrame = e => { const el = e.target.closest('.frame[data-n]'); focusTile(el && Number(el.dataset.n) <= state.step ? el.dataset.tile : null) }
+  $('strip').addEventListener('pointerover', lightFrame)
+  $('strip').addEventListener('focusin', lightFrame)
+  $('strip').addEventListener('pointerleave', () => focusTile(null))
+  $('strip').addEventListener('focusout', () => focusTile(null))
   $('painterGrid').addEventListener('click', e => {
     const el = e.target.closest('.painter')
     if (!el) return
@@ -525,12 +585,12 @@ async function start() {
   if (T.repo.owner) { const a = $('repoLink'); a.href = `https://github.com/${T.repo.owner}/${T.repo.name}`; a.hidden = false }
   const capsule = Object.values(T.commits).map(c => c.capsule).find(Boolean)
   if (capsule) $('footLeft').innerHTML = `Painted through a <a href="${esc(capsule)}" target="_blank" rel="noopener noreferrer">Relay on LLM TimeMachine</a>`
-  $('branch').innerHTML = T.branches.map(b => `<option value="${esc(b.name)}">${esc(b.name)} · ${b.steps.length} step${b.steps.length === 1 ? '' : 's'}</option>`).join('')
-  $('branch').disabled = T.branches.length < 2
   wire()
   fit()
   state.branch = branch().name
   state.step = steps().length
+  renderBranchPick()
+  renderStrip()
   renderPainters()
   render(false)
 }

@@ -31,7 +31,14 @@ python3 -m http.server -d dist 4173   # then open http://localhost:4173
 ## Hosting
 
 A Vercel project linked to this repository (`vercel.json` sets the build).
-Production follows `main`; every `relay/…` branch gets a preview.
+Production follows `main`, which holds the site's code; every `relay/…`
+branch gets a preview. The build reads every branch from git, and when the
+deployed branch holds no step (main), the longest version leads.
+
+A push to a `relay/…` branch does not rebuild `main` by itself, so a GitHub
+webhook does it: a Vercel Deploy Hook for `main` (Settings → Git → Deploy
+Hooks) set as the Payload URL of a repository webhook on push events. Keep
+that URL private: anyone who has it can trigger a build.
 
 ## A new season
 
