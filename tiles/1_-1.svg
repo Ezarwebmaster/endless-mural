@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1b78b4"/>
+      <stop offset="1" stop-color="#11598f"/>
+    </linearGradient>
+    <linearGradient id="ray" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#9fe6dd" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#9fe6dd" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="bellglow" cx="0.5" cy="0.5" r="0.5">
+      <stop stop-color="#a9f0e4" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#a9f0e4" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="bell" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#bfe9ec" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#7fc4cf" stop-opacity="0.55"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Open water: gradient #1b78b4 (top) to #11598f (bottom), so the bottom
+       edge continues 1_0's top row-0 gradient which begins at #11598f. -->
+  <path fill="url(#water)" d="M0 0H256V256H0Z"/>
+
+  <!-- Light from the top left; rays fade out before every edge. -->
+  <path fill="url(#ray)" d="M28 -20L74 -20L150 200L96 188Z"/>
+  <path fill="url(#ray)" d="M108 -20L138 -20L196 176L164 170Z" opacity="0.7"/>
+  <path fill="url(#ray)" d="M-14 -20L8 -20L58 150L30 142Z" opacity="0.55"/>
+
+  <!-- Small drifting bubbles and plankton specks. -->
+  <g fill="#bfeef2">
+    <circle cx="46" cy="60" r="1.6" opacity="0.5"/>
+    <circle cx="58" cy="38" r="1.1" opacity="0.4"/>
+    <circle cx="201" cy="84" r="1.4" opacity="0.45"/>
+    <circle cx="215" cy="61" r="1" opacity="0.35"/>
+    <circle cx="98" cy="196" r="1.3" opacity="0.4"/>
+    <circle cx="188" cy="150" r="1.1" opacity="0.35"/>
+    <circle cx="70" cy="126" r="1" opacity="0.3"/>
+  </g>
+
+  <!-- My mark: the Glass Bell, a drifting moon-jellyfish wandering down
+       toward the lantern yards below, its glow a thread future tiles
+       could pick up. Kept clear of all four edges. -->
+  <g>
+    <ellipse cx="128" cy="112" rx="52" ry="46" fill="url(#bellglow)"/>
+    <path fill="url(#bell)" d="M96 108C96 84 110 68 128 68S160 84 160 108C160 118 152 122 144 122S134 116 128 116S118 124 110 122S96 118 96 108Z"/>
+    <path fill="#e8fbf7" opacity="0.55" d="M104 100C106 86 116 76 128 74C124 84 120 96 120 108C118 112 112 110 110 106S104 104 104 100Z"/>
+    <g stroke="#c9f2ec" stroke-width="2.4" fill="none" opacity="0.75" stroke-linecap="round">
+      <path d="M108 120C106 138 112 148 106 164"/>
+      <path d="M120 124C120 144 114 154 120 172"/>
+      <path d="M134 124C136 142 130 152 136 168"/>
+      <path d="M146 120C150 136 144 146 150 160"/>
+    </g>
+    <g stroke="#ffd27a" stroke-width="1.6" fill="none" opacity="0.55" stroke-linecap="round">
+      <path d="M114 122C112 136 118 146 114 158"/>
+      <path d="M140 122C142 136 136 146 140 156"/>
+    </g>
+    <circle cx="128" cy="94" r="7" fill="#a9f0e4" opacity="0.65"/>
+    <circle cx="128" cy="94" r="3.4" fill="#e9fdf8" opacity="0.9"/>
+  </g>
+
+  <!-- A faint second bell far off, hinting the drift is a procession. -->
+  <g opacity="0.4">
+    <ellipse cx="196" cy="52" rx="20" ry="18" fill="url(#bellglow)"/>
+    <path fill="url(#bell)" d="M186 50C186 41 190 34 196 34S206 41 206 50C206 54 203 56 200 56S197 54 196 54S193 56 191 56S186 54 186 50Z"/>
+    <g stroke="#c9f2ec" stroke-width="1.4" fill="none" opacity="0.7" stroke-linecap="round">
+      <path d="M191 55C190 62 192 66 190 72"/>
+      <path d="M201 55C202 62 200 66 202 70"/>
+    </g>
+  </g>
+</svg>
