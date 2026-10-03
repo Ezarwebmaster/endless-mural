@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#11598f"/>
+      <stop offset="1" stop-color="#0a3d66"/>
+    </linearGradient>
+    <linearGradient id="sand" x1="0" y1="204" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#b8996a"/>
+      <stop offset="1" stop-color="#76603f"/>
+    </linearGradient>
+    <linearGradient id="stone" x1="86" y1="110" x2="158" y2="206" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#438c98"/>
+      <stop offset="1" stop-color="#164b60"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="99" y1="88" x2="151" y2="132" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#79d9cf" stop-opacity="0.7"/>
+      <stop offset="1" stop-color="#175e79" stop-opacity="0.8"/>
+    </linearGradient>
+    <linearGradient id="shaft" x1="71" y1="19" x2="126" y2="167" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#91e4dd" stop-opacity="0"/>
+      <stop offset="0.25" stop-color="#91e4dd" stop-opacity="0.09"/>
+      <stop offset="1" stop-color="#91e4dd" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="aura">
+      <stop stop-color="#6ae2cb" stop-opacity="0.25"/>
+      <stop offset="1" stop-color="#6ae2cb" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pearl">
+      <stop stop-color="#fff4c7"/>
+      <stop offset="0.55" stop-color="#ffd27a"/>
+      <stop offset="1" stop-color="#e9a768"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Side seams: water gradient, then sand at y=204; bottom is #76603f. -->
+  <path fill="url(#water)" d="M0 0H256V256H0Z"/>
+  <path fill="url(#shaft)" d="M48 17L78 17L163 184L114 173Z"/>
+  <ellipse cx="126" cy="125" rx="77" ry="86" fill="url(#aura)"/>
+
+  <!-- Distant roofs stay within the tile, leaving open water at both seams. -->
+  <g fill="#0b4264" opacity="0.72">
+    <path d="M26 205V163H31V153H49V163H55V205Z"/>
+    <path d="M53 205V142L67 129L81 142V205Z"/>
+    <path d="M169 205V153H176V143H193V153H198V205Z"/>
+    <path d="M203 205V171L215 160L229 171V205Z"/>
+  </g>
+  <g fill="#66b4b8" opacity="0.2">
+    <path d="M61 147H65V170H61ZM71 147H75V170H71Z"/>
+    <path d="M180 158H185V178H180ZM213 175H218V190H213Z"/>
+  </g>
+
+  <path fill="url(#sand)" d="M0 204C26 204 42 199 65 201S107 209 133 205S175 199 199 202S238 204 256 204V256H0Z"/>
+  <ellipse cx="126" cy="211" rx="57" ry="9" fill="#655b49" opacity="0.32"/>
+
+  <!-- The pearl observatory: a shell-like dome over an inhabited tower. -->
+  <path fill="#123e53" d="M80 207L85 196H163L171 207Z"/>
+  <path fill="url(#stone)" d="M91 131H157V199H91Z"/>
+  <path fill="#123f55" d="M143 133H157V199H143Z"/>
+  <path fill="#63a7a6" d="M91 135H96V196H91Z" opacity="0.65"/>
+  <path fill="#286777" d="M85 128H164V138H85Z"/>
+  <path fill="#79c5bb" d="M85 128H164V131H85Z"/>
+  <path fill="url(#glass)" stroke="#6cbdb7" stroke-width="2" d="M87 127C87 102 102 85 125 85S163 102 163 127Z"/>
+  <g fill="none" stroke="#8bd2c4" stroke-width="1.5" opacity="0.75">
+    <path d="M125 86C110 94 102 108 102 127"/>
+    <path d="M125 86C122 99 120 112 120 127"/>
+    <path d="M125 86C136 95 143 109 144 127"/>
+    <path d="M92 107Q124 96 158 107"/>
+  </g>
+  <ellipse cx="126" cy="115" rx="18" ry="17" fill="url(#aura)"/>
+  <circle cx="126" cy="113" r="8" fill="url(#pearl)"/>
+  <circle cx="123" cy="110" r="2" fill="#fff4d5" opacity="0.85"/>
+  <path fill="#a6d6b9" d="M122 123H130L134 128H118Z"/>
+  <path fill="#4d999e" d="M123 84V77H127V84Z"/>
+  <circle cx="125" cy="75" r="3" fill="#92d7c7"/>
+
+  <g fill="#0b394f">
+    <path d="M102 162V150A6 6 0 0 1 114 150V162Z"/>
+    <path d="M126 162V150A6 6 0 0 1 138 150V162Z"/>
+    <path d="M114 198V179A10 10 0 0 1 134 179V198Z"/>
+  </g>
+  <g fill="#ffd27a">
+    <path d="M105 159V150A3 3 0 0 1 111 150V159Z" opacity="0.85"/>
+    <path d="M129 159V150A3 3 0 0 1 135 150V159Z" opacity="0.65"/>
+    <path d="M118 193V180A6 6 0 0 1 130 180V193Z" opacity="0.85"/>
+  </g>
+  <path stroke="#2e6672" stroke-width="2" d="M124 174V194M103 154H113M127 154H137"/>
+  <path fill="#73ada6" d="M96 165H143V168H96Z" opacity="0.55"/>
+  <path fill="#69918b" d="M106 197H140V201H106ZM100 201H146V205H100ZM94 205H152V209H94Z"/>
+
+  <g fill="none" stroke-linecap="round">
+    <g stroke="#216e70" stroke-width="3">
+      <path d="M55 208Q43 191 48 177M49 193L39 184M48 186L57 178"/>
+      <path d="M193 210Q201 194 196 181M199 198L210 187M198 190L188 181"/>
+      <path d="M180 211Q174 204 176 195"/>
+    </g>
+    <g stroke="#d98778" stroke-width="2.5">
+      <path d="M69 212L67 196M67 203L60 197M67 201L74 192M62 199L61 191"/>
+      <path d="M173 215L170 203M171 207L178 201M170 205L165 199"/>
+    </g>
+    <g stroke="#d2b486" stroke-width="1" opacity="0.45">
+      <path d="M24 222Q37 218 48 222M75 235Q95 229 113 234M150 224Q169 220 185 224M200 240Q215 236 232 239"/>
+    </g>
+  </g>
+  <g fill="#7c7152">
+    <ellipse cx="39" cy="231" rx="4" ry="2"/>
+    <ellipse cx="161" cy="238" rx="3" ry="1.5"/>
+    <ellipse cx="215" cy="216" rx="5" ry="2"/>
+  </g>
+
+  <g fill="#76c8c6" opacity="0.65">
+    <path d="M175 62Q182 55 190 61Q183 67 175 62L171 58V65Z"/>
+    <path d="M194 73Q200 68 207 73Q200 78 194 73L191 70V76Z"/>
+    <path d="M169 80Q174 76 180 80Q174 84 169 80L166 77V83Z"/>
+  </g>
+  <g fill="none" stroke="#8ed5d1" stroke-width="1" opacity="0.45">
+    <circle cx="151" cy="71" r="2.5"/>
+    <circle cx="146" cy="57" r="1.5"/>
+    <circle cx="150" cy="42" r="2"/>
+  </g>
+  <g fill="#8ccfc9" opacity="0.35">
+    <circle cx="36" cy="69" r="1"/>
+    <circle cx="69" cy="104" r="1.2"/>
+    <circle cx="103" cy="39" r="1"/>
+    <circle cx="216" cy="112" r="1.2"/>
+    <circle cx="185" cy="126" r="0.8"/>
+    <circle cx="44" cy="135" r="0.8"/>
+  </g>
+</svg>
