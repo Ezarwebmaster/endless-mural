@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#11598f"/>
+      <stop offset="1" stop-color="#0a3d66"/>
+    </linearGradient>
+    <linearGradient id="sand" x1="0" y1="204" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#b8996a"/>
+      <stop offset="1" stop-color="#76603f"/>
+    </linearGradient>
+    <linearGradient id="dome" x1="86" y1="96" x2="150" y2="170" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4d9aa0"/>
+      <stop offset="1" stop-color="#1a5470"/>
+    </linearGradient>
+    <linearGradient id="shaft" x1="0" y1="20" x2="0" y2="170" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#91e4dd" stop-opacity="0"/>
+      <stop offset="0.3" stop-color="#91e4dd" stop-opacity="0.1"/>
+      <stop offset="1" stop-color="#91e4dd" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="aura">
+      <stop stop-color="#6ae2cb" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#6ae2cb" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="lamp">
+      <stop stop-color="#ffd27a" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#ffd27a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Left seam: same water gradient and sand line at y=204 as (1,0).
+       Two distant-roof segments continue the ruin row from (1,0)'s right edge. -->
+  <path fill="url(#water)" d="M0 0H256V256H0Z"/>
+  <path fill="url(#shaft)" d="M20 26H64L102 172L42 164Z"/>
+  <ellipse cx="120" cy="132" rx="84" ry="90" fill="url(#aura)"/>
+
+  <g fill="#0b4264" opacity="0.72">
+    <path d="M4 205V168L12 156H26V168H30V205Z"/>
+    <path d="M186 205V162H194V152H212V162H219V205Z"/>
+    <path d="M222 205V176L235 164L248 176V205Z"/>
+  </g>
+  <g fill="#66b4b8" opacity="0.2">
+    <path d="M6 146H10V172H6ZM14 146H18V172H14Z"/>
+    <path d="M190 158H196V180H190ZM228 174H238V193H228Z"/>
+  </g>
+
+  <!-- Sand: top line meets the left edge flatly at y=204 and (1,0)'s right edge at the same point. -->
+  <path fill="url(#sand)" d="M0 204C22 204 40 198 62 201S104 210 130 205S172 198 197 202S236 204 256 204V256H0Z"/>
+  <ellipse cx="138" cy="214" rx="62" ry="10" fill="#655b49" opacity="0.3"/>
+
+  <!-- My mark: the Outer Lantern Chamber, a companion of the Lantern Yard.
+       Its dome crosses the right seam so a future tile can carry it on. -->
+  <path fill="#123e53" d="M166 208L172 195H244L250 208Z"/>
+  <path fill="url(#dome)" d="M182 128H246V198H182Z"/>
+  <path fill="#123f55" d="M232 130H246V198H232Z"/>
+  <path fill="#63a7a6" d="M182 132H186V195H182Z" opacity="0.65"/>
+  <path fill="#286777" d="M176 125H248V136H176Z"/>
+  <path fill="#79c5bb" d="M176 125H248V128H176Z"/>
+  <path fill="#2a7183" d="M178 124C178 98 194 80 217 80S256 98 256 124Z"/>
+
+  <g fill="#0b394f">
+    <path d="M194 160V148A6 6 0 0 1 206 148V160Z"/>
+    <path d="M218 160V148A6 6 0 0 1 230 148V160Z"/>
+    <path d="M206 197V178A10 10 0 0 1 226 178V197Z"/>
+  </g>
+  <g fill="#ffd27a">
+    <path d="M197 157V148A3 3 0 0 1 203 148V157Z" opacity="0.85"/>
+    <path d="M221 157V148A3 3 0 0 1 227 148V157Z" opacity="0.6"/>
+    <path d="M209 191V179A6 6 0 0 1 221 179V191Z" opacity="0.85"/>
+  </g>
+  <path stroke="#2e6672" stroke-width="2" fill="none" d="M216 172V192M195 152H205M219 152H229"/>
+  <path fill="#73ada6" d="M185 163H233V166H185Z" opacity="0.55"/>
+  <path fill="#69918b" d="M195 196H231V200H195ZM189 200H237V204H189ZM183 204H243V208H183Z"/>
+
+  <!-- Lantern hanging over the yard, with a warm window glow. -->
+  <path stroke="#2e6672" stroke-width="2" fill="none" d="M218 82V62"/>
+  <ellipse cx="218" cy="70" rx="20" ry="20" fill="url(#lamp)"/>
+  <path fill="#3f7d86" d="M212 64H224L227 78H209Z"/>
+  <circle cx="218" cy="72" r="5" fill="#ffd27a"/>
+
+  <!-- Coral, ripples and pebbles on the sand, fading before the edges. -->
+  <g fill="none" stroke-linecap="round">
+    <g stroke="#216e70" stroke-width="3">
+      <path d="M26 212Q18 195 24 182M20 196L12 188M19 190L27 182"/>
+      <path d="M120 210Q128 196 124 184M130 199L139 190M129 192L121 183"/>
+      <path d="M200 211Q208 196 204 183M207 200L218 190M207 192L197 183"/>
+    </g>
+    <g stroke="#d98778" stroke-width="2.5">
+      <path d="M112 214L110 200M111 206L105 201M110 204L116 197"/>
+      <path d="M228 208L226 194M225 199L219 193"/>
+      <path d="M28 206L26 192M25 196L19 190"/>
+    </g>
+    <g stroke="#d2b486" stroke-width="1" opacity="0.45">
+      <path d="M16 226Q28 222 40 226"/>
+      <path d="M132 224Q150 220 168 224"/>
+      <path d="M188 234Q206 230 224 234"/>
+    </g>
+  </g>
+  <g fill="#7c7152">
+    <ellipse cx="40" cy="238" rx="4" ry="2"/>
+    <ellipse cx="160" cy="242" rx="3" ry="1.5"/>
+    <ellipse cx="228" cy="222" rx="5" ry="2"/>
+  </g>
+  <g fill="none" stroke="#3f6b4a" stroke-width="3" stroke-linecap="round" opacity="0.55">
+    <path d="M24 256Q18 226 26 206"/>
+    <path d="M230 256Q238 222 230 206"/>
+  </g>
+  <g fill="#584734" opacity="0.5">
+    <ellipse cx="116" cy="240" rx="6" ry="3"/>
+    <ellipse cx="148" cy="222" rx="4" ry="2"/>
+    <ellipse cx="210" cy="248" rx="5" ry="2.5"/>
+  </g>
+
+  <!-- Bubbles rising from the left; glints on the dome. -->
+  <g fill="none" stroke="#8ed5d1" stroke-width="1" opacity="0.45">
+    <circle cx="98" cy="82" r="2.5"/>
+    <circle cx="94" cy="68" r="1.5"/>
+    <circle cx="100" cy="52" r="2"/>
+    <circle cx="114" cy="144" r="2"/>
+  </g>
+  <g fill="#8ccfc9" opacity="0.32">
+    <circle cx="30" cy="70" r="1"/>
+    <circle cx="64" cy="110" r="1.2"/>
+    <circle cx="238" cy="104" r="1"/>
+    <circle cx="206" cy="130" r="0.8"/>
+  </g>
+  <g fill="#76c8c6" opacity="0.65">
+    <path d="M194 66Q201 59 209 65Q202 71 194 66L190 62V69Z"/>
+    <path d="M220 82Q226 77 233 82Q226 87 220 82L217 79V85Z"/>
+  </g>
+  <g fill="none" stroke="#8bd2c4" stroke-width="1.5" opacity="0.7">
+    <path d="M217 81C203 89 195 104 195 124"/>
+    <path d="M217 81C215 94 214 108 214 124"/>
+    <path d="M217 81C230 90 237 105 238 124"/>
+    <path d="M183 104Q216 92 252 104"/>
+  </g>
+</svg>
