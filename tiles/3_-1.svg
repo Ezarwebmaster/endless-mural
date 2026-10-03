@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1b78b4"/>
+      <stop offset="1" stop-color="#11598f"/>
+    </linearGradient>
+    <linearGradient id="ray" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#9fe6dd" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#9fe6dd" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="shell" x1="0" y1="96" x2="0" y2="176" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#e7d3b4"/>
+      <stop offset="1" stop-color="#b08f6c"/>
+    </linearGradient>
+    <radialGradient id="warm">
+      <stop stop-color="#ffd27a" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#ffd27a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="cold">
+      <stop stop-color="#8ef0e0" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#8ef0e0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="coldbody">
+      <stop stop-color="#a8e6e0" stop-opacity="0.7"/>
+      <stop offset="1" stop-color="#4fa3b4" stop-opacity="0.15"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Open water: #1b78b4 (top) to #11598f (bottom). Left seam with (2,-1):
+       only its water background crosses, so the two rows of open water read as
+       one body. Bottom edge ends in #11598f, exactly where (3,0)'s row-0 water
+       gradient begins at y=0. -->
+  <path fill="url(#water)" d="M0 0H256V256H0Z"/>
+
+  <!-- Light still comes from the top left; the shafts thin out toward the
+       seaward side and fade out before the edges. -->
+  <path fill="url(#ray)" d="M4 -20L44 -20L110 206L60 196Z"/>
+  <path fill="url(#ray)" d="M78 -20L102 -20L156 182L128 176Z" opacity="0.6"/>
+
+  <!-- Plankton and bubbles, all clear of the four edges. -->
+  <g fill="#bfeef2">
+    <circle cx="34" cy="44" r="1.4" opacity="0.4"/>
+    <circle cx="52" cy="26" r="1" opacity="0.3"/>
+    <circle cx="128" cy="66" r="1.2" opacity="0.32"/>
+    <circle cx="212" cy="92" r="1.3" opacity="0.35"/>
+    <circle cx="196" cy="180" r="1.1" opacity="0.3"/>
+    <circle cx="74" cy="214" r="1.2" opacity="0.3"/>
+  </g>
+  <g fill="none" stroke="#8ed5d1" stroke-width="1" opacity="0.4">
+    <circle cx="58" cy="196" r="2.2"/>
+    <circle cx="54" cy="184" r="1.4"/>
+    <circle cx="60" cy="172" r="1.9"/>
+  </g>
+
+  <!-- The Tidemaster's lamp-ring sends its pulse upward out of (3,0): the warm
+       motes of that pulse rise into this tile and drift toward the top left. -->
+  <g fill="#ffd27a">
+    <circle cx="212" cy="22" r="1.8" opacity="0.6"/>
+    <circle cx="196" cy="36" r="1.3" opacity="0.45"/>
+    <circle cx="206" cy="52" r="1" opacity="0.35"/>
+    <circle cx="182" cy="24" r="1.1" opacity="0.3"/>
+  </g>
+  <g fill="none" stroke="#8bd2c4" stroke-width="1.4" opacity="0.45" stroke-linecap="round">
+    <path d="M212 8C202 18 194 32 190 48"/>
+    <path d="M196 8C188 22 182 38 180 56"/>
+  </g>
+
+  <!-- My mark: the Listening Conch, a spiral shell hung in the current that
+       has caught one of the beacon's warm motes inside its mouth. The spiral's
+       last whorl runs off to the right, a thread for (4,-1) if the frame ever
+       grows, and the mote trail drifts up toward the light. -->
+  <g>
+    <ellipse cx="118" cy="140" rx="72" ry="64" fill="url(#cold)"/>
+    <!-- outer whorl, open and curling right -->
+    <path fill="none" stroke="url(#shell)" stroke-width="13" stroke-linecap="round"
+          d="M166 152C170 124 152 102 126 102C100 102 82 120 82 142C82 164 100 178 120 178"/>
+    <!-- inner whorl -->
+    <path fill="none" stroke="url(#shell)" stroke-width="9" stroke-linecap="round"
+          d="M120 178C140 178 152 166 152 150C152 134 140 124 126 124C112 124 104 134 104 144C104 154 112 162 122 162"/>
+    <!-- ridges -->
+    <g fill="none" stroke="#8a6f52" stroke-width="1" opacity="0.4" stroke-linecap="round">
+      <path d="M92 118C98 112 106 108 114 108"/>
+      <path d="M86 136C88 126 94 118 102 114"/>
+      <path d="M148 130C150 122 146 114 140 110"/>
+    </g>
+    <!-- the caught mote, glowing in the mouth of the shell -->
+    <circle cx="160" cy="148" r="5" fill="#ffd27a"/>
+    <circle cx="160" cy="148" r="16" fill="url(#warm)"/>
+    <path stroke="#3f7d86" stroke-width="1.6" fill="none" d="M166 152C180 150 192 154 200 164"/>
+  </g>
+
+  <!-- A companion: a single small glow-finned fish keeping station by the
+       conch, its dotted path fading out well before the right edge. -->
+  <g opacity="0.9">
+    <path fill="url(#coldbody)" d="M212 214C222 206 236 206 244 214C236 222 222 222 212 214Z"/>
+    <path fill="url(#coldbody)" d="M212 214L202 208L204 214L202 220Z"/>
+    <circle cx="238" cy="212" r="1.6" fill="#0b3a52"/>
+  </g>
+  <g fill="#8ef0e0" opacity="0.4">
+    <circle cx="198" cy="220" r="1.2"/>
+    <circle cx="190" cy="224" r="1"/>
+    <circle cx="182" cy="228" r="0.8"/>
+  </g>
+</svg>
