@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="rock" x1="0" y1="0" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#76603f"/>
+      <stop offset="1" stop-color="#3b2f22"/>
+    </linearGradient>
+    <linearGradient id="root" x1="104" y1="10" x2="150" y2="240" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8b7a52"/>
+      <stop offset="0.55" stop-color="#5c4a2e"/>
+      <stop offset="1" stop-color="#2f2618"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop stop-color="#ffd27a" stop-opacity="0.5"/>
+      <stop offset="0.5" stop-color="#f0a95e" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#f0a95e" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="tunnel" cx="0.5" cy="0.62" r="0.62">
+      <stop stop-color="#ffd27a" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#6fd3c6" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="shellw" x1="0" y1="176" x2="0" y2="248" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4d999e"/>
+      <stop offset="1" stop-color="#1d5666"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Top edge continues the sand of tile 0_0, which ends in #76603f there. -->
+  <path fill="url(#rock)" d="M0 0H256V256H0Z"/>
+  <path fill="#8d7c58" opacity="0.35" d="M0 0H256V7C206 4 168 10 128 6S46 3 0 8Z"/>
+  <path fill="#2b2317" opacity="0.35" d="M0 122C44 112 88 130 128 124S204 110 256 120V256H0Z" fill-opacity="0.18"/>
+
+  <!-- Rock strata, soft and open at the edges so they continue. -->
+  <g fill="none" stroke-linecap="round">
+    <g stroke="#5d4b2e" stroke-width="3" opacity="0.45">
+      <path d="M0 34C40 26 82 42 124 36S206 24 256 32"/>
+      <path d="M0 88C46 78 92 96 138 88S212 74 256 84"/>
+    </g>
+    <g stroke="#a08a5e" stroke-width="1.5" opacity="0.25">
+      <path d="M0 48C40 40 82 56 124 50S206 38 256 46"/>
+      <path d="M0 100C46 90 92 108 138 100S212 86 256 96"/>
+    </g>
+  </g>
+
+  <!-- The observatory's foundations: a stone plinth and the roots below it. -->
+  <path fill="url(#root)" d="M104 0H152L156 44L150 92L158 140L150 196L156 256H140L134 196L142 140L134 92L130 44Z"/>
+  <g fill="#a08a5e" opacity="0.3">
+    <path d="M104 0H112L114 44L110 92L116 140L110 196L114 256H104L108 196L100 140L106 92L100 44Z"/>
+  </g>
+  <g fill="none" stroke="#3b2f22" stroke-width="2" opacity="0.6">
+    <path d="M126 20V60M128 70V112M124 120V160M130 170V214M126 224V256"/>
+  </g>
+  <path fill="#6b5836" d="M96 0H160V9H96Z"/>
+
+  <!-- Two glowing tunnels bored through the rock, one continuing to the right. -->
+  <ellipse cx="182" cy="150" rx="62" ry="52" fill="url(#tunnel)"/>
+  <path fill="#241d14" d="M158 214V176A24 24 0 0 1 206 176V214Z"/>
+  <path fill="url(#glow)" d="M162 214V177A20 20 0 0 1 202 177V214Z"/>
+  <path fill="#4a3a24" d="M154 210H210V220H154Z"/>
+  <g fill="#ffd27a" opacity="0.75">
+    <circle cx="176" cy="196" r="2"/>
+    <circle cx="188" cy="202" r="1.6"/>
+    <circle cx="196" cy="190" r="1.3"/>
+  </g>
+  <path fill="#241d14" d="M-4 66H44V104H-4Z" opacity="0.85"/>
+  <path fill="url(#glow)" d="M0 68H40V104H0Z" opacity="0.5"/>
+
+  <!-- My mark: a sleeping lantern-shell creature tucked into the rock, -->
+  <!-- with a lamp of its own that a future tile below could follow down. -->
+  <g>
+    <ellipse cx="70" cy="186" rx="52" ry="40" fill="url(#tunnel)"/>
+    <path fill="url(#shellw)" d="M18 190a52 40 0 0 1 104 0Z"/>
+    <g fill="none" stroke="#8fd6cc" stroke-width="2" opacity="0.5">
+      <path d="M70 152V190"/>
+      <path d="M46 156Q34 174 36 190"/>
+      <path d="M94 156Q106 174 104 190"/>
+      <path d="M28 172Q70 160 112 172"/>
+    </g>
+    <path fill="#1d5666" d="M18 190a52 40 0 0 1 104 0Z" opacity="0"/>
+    <ellipse cx="70" cy="190" rx="52" ry="6" fill="#33281a" opacity="0.5"/>
+    <path fill="#8fd6cc" d="M64 152H76L80 144H60Z"/>
+    <circle cx="70" cy="140" r="9" fill="url(#glow)"/>
+    <circle cx="70" cy="140" r="4" fill="#ffd27a"/>
+    <path fill="none" stroke="#6fd3c6" stroke-width="1.5" stroke-linecap="round" d="M44 196Q40 214 48 230M96 196Q100 214 92 230"/>
+    <g fill="#c99a72" opacity="0.7">
+      <circle cx="30" cy="164" r="3"/>
+      <circle cx="110" cy="158" r="2.5"/>
+      <circle cx="88" cy="146" r="2"/>
+    </g>
+  </g>
+
+  <!-- Kelp and pebbles fading out before the edges. -->
+  <g fill="none" stroke="#3f6b4a" stroke-width="3" stroke-linecap="round" opacity="0.55">
+    <path d="M22 256Q16 226 24 206"/>
+    <path d="M232 256Q240 222 232 200"/>
+  </g>
+  <g fill="#584734" opacity="0.5">
+    <ellipse cx="118" cy="240" rx="6" ry="3"/>
+    <ellipse cx="150" cy="222" rx="4" ry="2"/>
+    <ellipse cx="212" cy="248" rx="5" ry="2.5"/>
+  </g>
+</svg>
