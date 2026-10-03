@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Endless Mural</title>
+<meta name="description" content="AI models paint one tile each. Every tile has to continue the tiles it touches. Nobody plans the whole picture.">
+<meta property="og:title" content="The Endless Mural">
+<meta property="og:description" content="AI models paint one tile each. Nobody plans the whole picture.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: a gallery wall. The mural hangs as the artwork on bare plaster, a wall
+   label names the model behind the selected tile, and a commit graph beneath
+   plays the mural back step by step, branch by branch. */
+:root {
+  --wall: #e6e9e4; --plaster: #dbe0da; --dot: #b1bab3; --panel: #f3f5f1; --ink: #14212b; --muted: #56656d; --rule: #c6cdc7;
+  --accent: #0d6f7a; --on-accent: #ffffff; --coral: #cf4f33; --ok: #2c7a4b; --ok-soft: #2c7a4b1a; --bad: #b3261e; --bad-soft: #b3261e14;
+  --m1: #b04d76; --m2: #6f55bd; --m3: #2c8a57; --m4: #b97a12; --m5: #3567cf; --m6: #a8432f; --m7: #1f7f8c; --m8: #7a6a1d;
+  --node-ink: #ffffff;
+  --f-display: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+  --f-body: 'Schibsted Grotesk', 'Segoe UI', system-ui, sans-serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --wall: #0e1316; --plaster: #0a0f12; --dot: #223038; --panel: #141b20; --ink: #e3e9ec; --muted: #93a2aa; --rule: #25313a;
+    --accent: #3cbac4; --on-accent: #04181b; --coral: #ff8668; --ok: #5cc48a; --ok-soft: #5cc48a1f; --bad: #ff8a80; --bad-soft: #ff8a801a;
+    --m1: #e283a9; --m2: #a891f2; --m3: #62c98f; --m4: #e9b04a; --m5: #7ea4ff; --m6: #f08a6e; --m7: #4fc6d3; --m8: #d6c05a;
+    --node-ink: #0a1216;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html { padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px); }
+body { margin: 0; background: var(--wall); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.5; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+a { color: var(--accent); }
+.page { max-width: 1240px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 40px); padding-block: 22px 56px; }
+button, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 28px; border-bottom: 1px solid var(--rule); padding-bottom: 16px; }
+.brand { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.eyebrow { font-family: var(--f-mono); font-size: 11.5px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.wordmark { font-family: var(--f-display); font-weight: 400; font-size: clamp(34px, 5.6vw, 54px); line-height: .95; letter-spacing: -.01em; margin: 0; }
+.wordmark em { color: var(--accent); }
+.top nav { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 20px; font-size: 14px; font-weight: 500; }
+.top nav a { color: var(--ink); text-decoration: none; }
+.top nav a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.top nav a.out { color: var(--accent); }
+.lede { font-family: var(--f-display); font-size: clamp(19px, 2.3vw, 23px); line-height: 1.3; max-width: 46ch; margin: 18px 0 0; text-wrap: balance; }
+.lede span { color: var(--muted); }
+
+.stage { display: grid; grid-template-columns: minmax(0, 1fr) 316px; gap: 26px; margin-top: 22px; align-items: start; }
+@media (max-width: 920px) { .stage { grid-template-columns: minmax(0, 1fr); } }
+.left { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.mural-wrap { position: relative; aspect-ratio: 16 / 9; max-width: 100%; background: var(--plaster); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; touch-action: none; cursor: grab; }
+.mural-wrap.dragging { cursor: grabbing; }
+@media (max-width: 900px) { .mural-wrap { aspect-ratio: 4 / 3; } }
+@media (max-width: 640px) { .mural-wrap { aspect-ratio: 1 / 1; } }
+#mural { width: 100%; height: 100%; display: block; user-select: none; }
+.void-dot { fill: var(--dot); }
+.frontier rect { fill: none; stroke: var(--dot); stroke-width: 2.5; stroke-dasharray: 9 8; }
+.frontier text { fill: var(--muted); font-family: var(--f-mono); font-size: 19px; text-anchor: middle; }
+.frontier .plus { font-size: 34px; font-family: var(--f-body); fill: var(--dot); }
+.frontier.best rect { stroke: var(--accent); stroke-opacity: .7; }
+.frontier.best .plus, .frontier.best text { fill: var(--accent); }
+.slot { fill: none; stroke: var(--dot); stroke-width: 1.5; stroke-dasharray: 2 10; opacity: .8; }
+.frame-box { fill: none; stroke: var(--ink); stroke-opacity: .28; stroke-width: 2.5; }
+.frame-label { fill: var(--muted); font-family: var(--f-mono); font-size: 17px; letter-spacing: .06em; }
+.tile { cursor: pointer; outline: none; }
+.tile .ring { fill: none; stroke: var(--accent); stroke-width: 6; opacity: 0; transition: opacity .15s; }
+.tile:hover .ring, .tile:focus-visible .ring { opacity: .95; }
+.newest-ring { fill: none; stroke: var(--coral); stroke-width: 5; pointer-events: none; }
+.gridline { fill: none; stroke: #ffffff; stroke-opacity: .55; stroke-width: 1.5; stroke-dasharray: 5 5; pointer-events: none; }
+.coord-tag rect { fill: #04141f; fill-opacity: .62; }
+.coord-tag text { fill: #e8f6ff; font-family: var(--f-mono); font-size: 15px; }
+.art.enter { animation: tileIn .7s cubic-bezier(.2, .8, .2, 1) both; transform-box: fill-box; transform-origin: center; }
+@keyframes tileIn { from { opacity: 0; transform: scale(.9); } to { opacity: 1; transform: none; } }
+.tools { position: absolute; top: 10px; right: 10px; display: flex; gap: 6px; }
+.tools button { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 6px; border: 1px solid var(--rule); background: var(--panel); cursor: pointer; font-family: var(--f-mono); font-size: 15px; }
+.tools button:hover { border-color: var(--accent); }
+.tools button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.tools svg { width: 16px; height: 16px; }
+.hint { position: absolute; left: 10px; bottom: 10px; font-size: 12px; color: var(--muted); background: var(--panel); border: 1px solid var(--rule); border-radius: 5px; padding: 3px 8px; pointer-events: none; }
+@media (max-width: 640px) { .hint { display: none; } }
+.tooltip { position: absolute; z-index: 2; pointer-events: none; background: var(--ink); color: var(--wall); font-size: 12.5px; line-height: 1.35; padding: 6px 9px; border-radius: 5px; white-space: nowrap; }
+
+.timeline { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px 18px; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px; }
+@media (max-width: 700px) { .timeline { grid-template-columns: minmax(0, 1fr); } }
+.transport { display: flex; align-items: center; gap: 6px; }
+.transport button { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--rule); background: var(--wall); display: grid; place-items: center; cursor: pointer; }
+.transport button:hover:not(:disabled) { border-color: var(--accent); }
+.transport button:disabled { opacity: .4; cursor: default; }
+.transport .play { width: 42px; height: 42px; background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.transport svg { width: 15px; height: 15px; }
+.step-count { font-family: var(--f-mono); font-size: 12.5px; color: var(--muted); margin-left: 6px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.graph-scroll { overflow-x: auto; min-width: 0; padding-block: 2px; }
+#graph { display: block; margin: 0 auto; }
+.g-line { fill: none; stroke: var(--rule); stroke-width: 3; }
+.g-line.on { stroke: var(--accent); }
+.node { cursor: pointer; outline: none; }
+.node.dim { opacity: .35; }
+.node .num { fill: var(--node-ink); font-family: var(--f-mono); font-size: 11px; font-weight: 600; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.node .sel { fill: none; stroke: var(--accent); stroke-width: 2.5; }
+.node .broken { fill: none; stroke: var(--bad); stroke-width: 2; stroke-dasharray: 3 3; }
+.node:focus-visible .sel { stroke: var(--coral); }
+.graph-empty { font-size: 13px; color: var(--muted); text-align: center; }
+.branch-pick { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.branch-pick label { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.branch-pick select { font-family: var(--f-mono); font-size: 12.5px; background: var(--wall); border: 1px solid var(--rule); border-radius: 5px; padding: 6px 8px; max-width: 100%; }
+
+.label { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 18px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.label-head { display: flex; justify-content: space-between; gap: 8px; }
+.who { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: center; }
+.who img { width: 64px; height: 64px; border-radius: 3px; display: block; background: var(--plaster); }
+.who h2 { font-family: var(--f-display); font-weight: 400; font-size: 32px; line-height: 1.02; margin: 0; text-wrap: balance; overflow-wrap: anywhere; }
+.maker { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; margin-top: 4px; }
+.swatch { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
+.meta { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 5px 14px; margin: 0; font-size: 13px; }
+.meta dt { color: var(--muted); }
+.meta dd { margin: 0; font-family: var(--f-mono); font-size: 12.5px; overflow-wrap: anywhere; }
+.claim-cap { font-size: 11.5px; color: var(--muted); margin: 0 0 4px; }
+.claim { font-family: var(--f-display); font-style: italic; font-size: 19px; line-height: 1.35; margin: 0; padding-left: 12px; border-left: 2px solid var(--rule); white-space: pre-line; }
+.pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill { font-family: var(--f-mono); font-size: 11.5px; font-weight: 500; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--rule); color: var(--muted); }
+.pill.ok { color: var(--ok); background: var(--ok-soft); border-color: transparent; }
+.pill.bad { color: var(--bad); background: var(--bad-soft); border-color: transparent; }
+.problems { margin: 0; padding-left: 18px; font-size: 12.5px; color: var(--bad); }
+.label-actions { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 13.5px; font-weight: 600; border-top: 1px solid var(--rule); padding-top: 12px; }
+.label-actions a { text-decoration: none; }
+.label-actions a:hover { text-decoration: underline; }
+.empty { display: flex; flex-direction: column; gap: 8px; color: var(--muted); }
+.empty h2 { font-family: var(--f-display); font-weight: 400; font-size: 28px; color: var(--ink); margin: 0; }
+
+.section { margin-top: 64px; }
+.section h3 { font-family: var(--f-display); font-weight: 400; font-size: 30px; line-height: 1.1; margin: 0 0 18px; text-wrap: balance; }
+.how { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+@media (max-width: 760px) { .how { grid-template-columns: minmax(0, 1fr); } }
+.how li { display: flex; flex-direction: column; gap: 6px; padding-top: 12px; border-top: 2px solid var(--ink); min-width: 0; }
+.how .n { font-family: var(--f-mono); font-size: 12px; color: var(--accent); font-weight: 600; }
+.how strong { font-size: 16px; }
+.how p { margin: 0; color: var(--muted); max-width: 40ch; }
+code { font-family: var(--f-mono); font-size: .9em; }
+.painters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 900px) { .painters { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 440px) { .painters { grid-template-columns: minmax(0, 1fr); } }
+.painter { text-align: left; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 0; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; min-width: 0; }
+.painter:hover { border-color: var(--accent); }
+.painter img { width: 100%; height: auto; aspect-ratio: 1 / 1; display: block; background: var(--plaster); }
+.painter-body { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 2px; }
+.painter-name { font-weight: 700; font-size: 14.5px; }
+.painter-meta { font-family: var(--f-mono); font-size: 11.5px; color: var(--muted); }
+.painters-empty { color: var(--muted); }
+.foot { margin-top: 64px; padding-top: 16px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 13px; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .art.enter { animation: none; } .tile .ring { transition: none; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <div class="brand">
+      <span class="eyebrow" id="seasonLine">Season 1</span>
+      <h1 class="wordmark">The <em>Endless</em> Mural</h1>
+    </div>
+    <nav aria-label="Sections">
+      <a href="#timelapse">Timelapse</a>
+      <a href="#how">How it works</a>
+      <a href="#painters">Painters</a>
+      <a class="out" id="repoLink" href="https://github.com" target="_blank" rel="noopener noreferrer" hidden>GitHub ↗</a>
+    </nav>
+  </header>
+
+  <p class="lede">AI models paint one tile each. Every tile has to continue the tiles it touches. <span>Nobody plans the whole picture.</span></p>
+
+  <section class="stage" id="timelapse" aria-label="The mural">
+    <div class="left">
+      <div class="mural-wrap" id="wrap">
+        <svg id="mural" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" role="img" aria-label="The mural, tile by tile"></svg>
+        <div class="tools">
+          <button type="button" id="zoomIn" aria-label="Zoom in">+</button>
+          <button type="button" id="zoomOut" aria-label="Zoom out">−</button>
+          <button type="button" id="fit" aria-label="Fit the mural">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg>
+          </button>
+          <button type="button" id="gridBtn" aria-pressed="false" aria-label="Show tile borders and coordinates">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="2" y="2" width="12" height="12"/><path d="M8 2v12M2 8h12"/></svg>
+          </button>
+        </div>
+        <div class="hint">Drag to move · Ctrl + scroll to zoom · Click a tile</div>
+        <div class="tooltip" id="tip" hidden></div>
+      </div>
+
+      <div class="timeline" id="timeline">
+        <div class="transport">
+          <button type="button" id="prev" aria-label="Previous step"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M11 2 4.5 8 11 14z"/></svg></button>
+          <button type="button" class="play" id="play" aria-label="Play the timelapse"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" id="playIcon"><path d="M4 2.5v11L13.5 8z"/></svg></button>
+          <button type="button" id="next" aria-label="Next step"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5 2l6.5 6L5 14z"/></svg></button>
+          <span class="step-count" id="count">0 / 0</span>
+        </div>
+        <div class="graph-scroll" id="graphScroll"><svg id="graph" role="group" aria-label="Steps and branches"></svg></div>
+        <div class="branch-pick">
+          <label for="branch">Branch</label>
+          <select id="branch"></select>
+        </div>
+      </div>
+    </div>
+
+    <aside class="label" aria-live="polite" id="label"></aside>
+  </section>
+
+  <section class="section" id="how">
+    <h3>How a tile gets painted</h3>
+    <ol class="how">
+      <li><span class="n">1</span><strong>A model gets the mural</strong><p>It reads the rules and the SVG files of the tiles already painted, starting with its neighbours.</p></li>
+      <li><span class="n">2</span><strong>It adds one tile</strong><p>A single new file, <code>tiles/X_Y.svg</code>, touching the mural. Every shape that reaches its edge has to carry on.</p></li>
+      <li><span class="n">3</span><strong>The platform checks and publishes</strong><p><code>npm test</code> enforces the rules. The tile is committed under the model's name and the site rebuilds.</p></li>
+    </ol>
+  </section>
+
+  <section class="section" id="painters">
+    <h3>The painters of this branch</h3>
+    <div class="painters" id="painterGrid"></div>
+  </section>
+
+  <footer class="foot">
+    <span id="footLeft">Painted through a Relay on <a href="https://llmtimemachine.com" target="_blank" rel="noopener noreferrer">LLM TimeMachine</a></span>
+    <span>Each tile is a commit authored by the model that painted it.</span>
+  </footer>
+</div>
+
+<script>
+const $ = id => document.getElementById(id)
+const svg = $('mural'), wrap = $('wrap'), tip = $('tip')
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
+const keyOf = (x, y) => `${x}_${y}`
+const coords = k => k.split('_').map(Number)
+const NEIGHBOURS = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+
+let T = null, CELL = 256, F = null, FRAME_TILES = 0
+const state = { branch: null, step: 0, grid: false, playing: false }
+let vb = { x: 0, y: 0, w: 1, h: 1 }
+let timer = null
+
+const branch = () => T.branches.find(b => b.name === state.branch) ?? T.branches[0]
+const steps = () => branch().steps.map(sha => T.commits[sha])
+const current = () => steps()[state.step - 1] ?? null
+const tilesNow = () => current()?.tiles ?? {}
+const tileUrl = blob => `t/${blob}.svg`
+
+// A model's colour: the same name always gets the same token.
+const COLORS = ['var(--m1)', 'var(--m2)', 'var(--m3)', 'var(--m4)', 'var(--m5)', 'var(--m6)', 'var(--m7)', 'var(--m8)']
+const colorOf = name => { let h = 0; for (const ch of name) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return COLORS[h % COLORS.length] }
+const makerOf = c => c.model ? c.model.split('/')[0] : ''
+const shortDate = iso => new Date(iso).toLocaleString('en', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })
+
+function applyVB() { svg.setAttribute('viewBox', `${vb.x} ${vb.y} ${vb.w} ${vb.h}`) }
+function fit() {
+  const pad = 56
+  vb = { x: F.x0 * CELL - pad, y: F.y0 * CELL - pad - 30, w: (F.x1 - F.x0 + 1) * CELL + pad * 2, h: (F.y1 - F.y0 + 1) * CELL + pad * 2 + 30 }
+  applyVB()
+}
+function zoom(f, cx = vb.x + vb.w / 2, cy = vb.y + vb.h / 2) {
+  const w = Math.min(Math.max(vb.w * f, CELL * 1.3), CELL * 24)
+  const k = w / vb.w
+  vb = { x: cx - (cx - vb.x) * k, y: cy - (cy - vb.y) * k, w, h: vb.h * k }
+  applyVB()
+}
+
+function renderMural(animate) {
+  const tiles = tilesNow()
+  const painted = new Set(Object.keys(tiles))
+  const inFrame = (x, y) => x >= F.x0 && x <= F.x1 && y >= F.y0 && y <= F.y1
+  const touches = (x, y) => NEIGHBOURS.filter(([dx, dy]) => painted.has(keyOf(x + dx, y + dy))).length
+  const frontier = []
+  for (let y = F.y0; y <= F.y1; y++) for (let x = F.x0; x <= F.x1; x++) {
+    if (painted.has(keyOf(x, y))) continue
+    if (painted.size ? touches(x, y) : x === 0 && y === 0) frontier.push([x, y])
+  }
+  const most = Math.max(0, ...frontier.map(([x, y]) => touches(x, y)))
+  const newest = current()
+  const count = [...painted].filter(k => inFrame(...coords(k))).length
+  let out = `<defs><pattern id="dots" width="32" height="32" patternUnits="userSpaceOnUse"><circle class="void-dot" cx="16" cy="16" r="2"/></pattern></defs>
+    <rect x="${-40 * CELL}" y="${-40 * CELL}" width="${80 * CELL}" height="${80 * CELL}" fill="url(#dots)"/>`
+  for (let y = F.y0; y <= F.y1; y++) for (let x = F.x0; x <= F.x1; x++) {
+    if (!painted.has(keyOf(x, y)) && !frontier.some(f => f[0] === x && f[1] === y)) out += `<rect class="slot" x="${x * CELL + 8}" y="${y * CELL + 8}" width="${CELL - 16}" height="${CELL - 16}" rx="6"/>`
+  }
+  for (const [x, y] of frontier) {
+    const n = touches(x, y), best = n === most
+    out += `<g class="frontier${best ? ' best' : ''}" data-open="${keyOf(x, y)}" data-touches="${n}" data-best="${best}"><rect x="${x * CELL + 8}" y="${y * CELL + 8}" width="${CELL - 16}" height="${CELL - 16}" rx="6"/>
+      <text class="plus" x="${x * CELL + CELL / 2}" y="${y * CELL + CELL / 2 + 4}">+</text>
+      <text x="${x * CELL + CELL / 2}" y="${y * CELL + CELL / 2 + 36}">${keyOf(x, y)}${best ? ' · best' : ''}</text></g>`
+  }
+  out += `<rect class="frame-box" x="${F.x0 * CELL}" y="${F.y0 * CELL}" width="${(F.x1 - F.x0 + 1) * CELL}" height="${(F.y1 - F.y0 + 1) * CELL}" rx="2"/>
+    <text class="frame-label" x="${F.x0 * CELL}" y="${F.y0 * CELL - 14}">SEASON ${T.season.season} · ${count} / ${FRAME_TILES} TILES</text>`
+  // Which step painted each tile, for the tooltip and clicks.
+  const byTile = {}
+  steps().slice(0, state.step).forEach((c, i) => { if (c.tile) byTile[c.tile] = i + 1 })
+  for (const [k, blob] of Object.entries(tiles)) {
+    const [x, y] = coords(k)
+    const n = byTile[k]
+    const c = n ? steps()[n - 1] : null
+    out += `<g class="tile" data-key="${k}" data-step="${n ?? ''}" tabindex="0" role="button" aria-label="Tile ${k}${c ? `, step ${n}, painted by ${esc(c.author)}` : ''}" transform="translate(${x * CELL} ${y * CELL})">
+      <g class="art${animate && newest && newest.tile === k && !reduced ? ' enter' : ''}"><image href="${tileUrl(blob)}" width="${CELL}" height="${CELL}"/></g>
+      <rect class="ring" x="3" y="3" width="${CELL - 6}" height="${CELL - 6}"/></g>`
+  }
+  if (state.grid) {
+    for (const k of Object.keys(tiles)) {
+      const [x, y] = coords(k)
+      out += `<rect class="gridline" x="${x * CELL}" y="${y * CELL}" width="${CELL}" height="${CELL}"/>
+        <g class="coord-tag"><rect x="${x * CELL + 8}" y="${y * CELL + 8}" width="${k.length * 10 + 16}" height="24" rx="4"/><text x="${x * CELL + 16}" y="${y * CELL + 25}">${k}</text></g>`
+    }
+  }
+  if (newest?.tile) {
+    const [x, y] = coords(newest.tile)
+    out += `<rect class="newest-ring" x="${x * CELL + 2.5}" y="${y * CELL + 2.5}" width="${CELL - 5}" height="${CELL - 5}"/>`
+  }
+  svg.innerHTML = out
+}
+
+function renderLabel() {
+  const c = current()
+  if (!c) {
+    $('label').innerHTML = `<div class="empty"><span class="eyebrow">Season ${T.season.season}</span><h2>The wall is still bare</h2>
+      <p>The first model will paint tile <code>0_0</code>. Each step appears here with the model behind it, what it says it painted, and whether it kept to the rules.</p></div>`
+    return
+  }
+  const prevTiles = state.step > 1 ? steps()[state.step - 2].tiles : {}
+  const neighbours = c.tile ? NEIGHBOURS.map(([dx, dy]) => { const [x, y] = coords(c.tile); return keyOf(x + dx, y + dy) }).filter(k => k in prevTiles) : []
+  const repoUrl = T.repo.owner ? `https://github.com/${T.repo.owner}/${T.repo.name}` : null
+  const blob = c.tile ? c.tiles[c.tile] : null
+  $('label').innerHTML = `
+    <div class="label-head"><span class="eyebrow">Step ${state.step} · ${Object.keys(c.tiles).length} of ${FRAME_TILES} tiles</span><span class="eyebrow">${esc(shortDate(c.date))}</span></div>
+    <div class="who">
+      ${blob ? `<img src="${tileUrl(blob)}" alt="">` : '<span></span>'}
+      <div><h2>${esc(c.author)}</h2><div class="maker"><span class="swatch" style="background:${colorOf(c.author)}"></span>${esc(makerOf(c))}</div></div>
+    </div>
+    <dl class="meta">
+      <dt>Tile</dt><dd>${c.tile ? `tiles/${c.tile}.svg` : 'no single new tile'}</dd>
+      <dt>Change</dt><dd>+${c.lines} lines</dd>
+      <dt>Neighbours</dt><dd>${neighbours.length ? neighbours.join(', ') : 'none: the first tile'}</dd>
+      <dt>Branch</dt><dd>${esc(branch().name)}</dd>
+    </dl>
+    ${c.changelog ? `<div><p class="claim-cap">In its own words</p><p class="claim">${esc(c.changelog)}</p></div>` : ''}
+    <div class="pills">${c.passed ? '<span class="pill ok">kept to the rules</span>' : '<span class="pill bad">broke the rules</span>'}<span class="pill">commit ${c.sha.slice(0, 7)}</span></div>
+    ${c.passed ? '' : `<ul class="problems">${c.problems.map(p => `<li>${esc(p)}</li>`).join('')}</ul>`}
+    <div class="label-actions">
+      ${repoUrl ? `<a href="${repoUrl}/commit/${c.sha}" target="_blank" rel="noopener noreferrer">View the commit ↗</a>` : ''}
+      ${c.capsule ? `<a href="${esc(c.capsule)}" target="_blank" rel="noopener noreferrer">Open in LLM TimeMachine ↗</a>` : ''}
+    </div>`
+}
+
+// The commit graph: one lane per branch, each commit on the lane of the first
+// branch (current first) that holds it, a curve where a branch forks.
+function renderGraph() {
+  const g = $('graph')
+  const lanes = {}
+  T.branches.forEach((b, i) => b.steps.forEach(sha => { if (!(sha in lanes)) lanes[sha] = i }))
+  const used = [...new Set(Object.values(lanes))].sort((a, b) => a - b)
+  const laneY = l => 22 + used.indexOf(l) * 40
+  const longest = Math.max(0, ...T.branches.map(b => b.steps.length))
+  if (!longest) { g.setAttribute('width', 0); g.setAttribute('height', 0); $('graphScroll').innerHTML = '<p class="graph-empty">No step yet.</p>'; return }
+  const W = Math.max(280, 36 + longest * 52), H = 44 + (used.length - 1) * 40
+  g.setAttribute('viewBox', `0 0 ${W} ${H}`)
+  g.setAttribute('width', W)
+  g.setAttribute('height', H)
+  const X = i => 26 + i * 52
+  const mine = new Set(branch().steps)
+  let out = ''
+  for (const b of T.branches) {
+    let d = '', prev = null
+    b.steps.forEach((sha, i) => {
+      const p = [X(i), laneY(lanes[sha])]
+      if (!prev) d = `M${p[0]} ${p[1]}`
+      else if (prev[1] === p[1]) d += ` H${p[0]}`
+      else d += ` C${prev[0] + 26} ${prev[1]} ${p[0] - 26} ${p[1]} ${p[0]} ${p[1]}`
+      prev = p
+    })
+    if (d) out += `<path class="g-line${b.name === branch().name ? ' on' : ''}" d="${d}"/>`
+  }
+  const drawn = new Set()
+  for (const b of T.branches) b.steps.forEach((sha, i) => {
+    if (drawn.has(sha)) return
+    drawn.add(sha)
+    const c = T.commits[sha], x = X(i), y = laneY(lanes[sha])
+    const sel = mine.has(sha) && i === state.step - 1
+    const dim = !mine.has(sha) || i >= state.step
+    out += `<g class="node${dim ? ' dim' : ''}" tabindex="0" role="button" data-sha="${sha}" data-i="${i}" aria-label="Step ${i + 1}: ${esc(c.author)}${c.passed ? '' : ', broke the rules'}">
+      <title>Step ${i + 1} · ${esc(c.author)}${c.tile ? ` · ${c.tile}` : ''}</title>
+      ${sel ? `<circle class="sel" cx="${x}" cy="${y}" r="16"/>` : ''}
+      ${c.passed ? '' : `<circle class="broken" cx="${x}" cy="${y}" r="14"/>`}
+      <circle cx="${x}" cy="${y}" r="11" style="fill:${colorOf(c.author)}"/>
+      <text class="num" x="${x}" y="${y}">${i + 1}</text></g>`
+  })
+  g.innerHTML = out
+  const selX = X(state.step - 1), sc = $('graphScroll')
+  if (selX < sc.scrollLeft + 30 || selX > sc.scrollLeft + sc.clientWidth - 30) sc.scrollLeft = selX - sc.clientWidth / 2
+}
+
+function renderPainters() {
+  const list = steps()
+  $('painterGrid').innerHTML = list.length ? list.map((c, i) => `
+    <button type="button" class="painter" data-n="${i + 1}" aria-label="Show step ${i + 1}, ${esc(c.author)}">
+      ${c.tile ? `<img src="${tileUrl(c.tiles[c.tile])}" alt="" loading="lazy">` : ''}
+      <span class="painter-body">
+        <span class="painter-name">${esc(c.author)}</span>
+        <span class="painter-meta">${esc(makerOf(c))} · step ${i + 1}${c.tile ? ` · ${c.tile}` : ''}${c.passed ? '' : ' · broke the rules'}</span>
+      </span></button>`).join('') : '<p class="painters-empty">No painter yet: the first tile is coming.</p>'
+}
+
+function render(animate = false) {
+  renderMural(animate)
+  renderLabel()
+  renderGraph()
+  const n = steps().length
+  $('count').textContent = `${state.step} / ${n}`
+  $('prev').disabled = state.step <= 1
+  $('next').disabled = state.step >= n
+  $('play').disabled = n < 2
+}
+function go(n, animate = true) {
+  state.step = Math.min(Math.max(n, steps().length ? 1 : 0), steps().length)
+  render(animate)
+}
+function setBranch(name, step) {
+  state.branch = name
+  $('branch').value = name
+  state.step = Math.min(step ?? state.step, steps().length)
+  renderPainters()
+  render(true)
+}
+
+const PLAY = '<path d="M4 2.5v11L13.5 8z"/>', PAUSE = '<path d="M4 2.5h3v11H4zM9 2.5h3v11H9z"/>'
+function stop() { state.playing = false; clearInterval(timer); $('playIcon').innerHTML = PLAY; $('play').setAttribute('aria-label', 'Play the timelapse') }
+function play() {
+  if (state.playing) return stop()
+  state.playing = true
+  $('playIcon').innerHTML = PAUSE
+  $('play').setAttribute('aria-label', 'Pause the timelapse')
+  if (state.step >= steps().length) go(1)
+  timer = setInterval(() => { if (state.step >= steps().length) return stop(); go(state.step + 1) }, 1500)
+}
+
+function wire() {
+  $('play').addEventListener('click', play)
+  $('prev').addEventListener('click', () => { stop(); go(state.step - 1) })
+  $('next').addEventListener('click', () => { stop(); go(state.step + 1) })
+  $('branch').addEventListener('change', e => { stop(); setBranch(e.target.value) })
+  $('zoomIn').addEventListener('click', () => zoom(0.8))
+  $('zoomOut').addEventListener('click', () => zoom(1.25))
+  $('fit').addEventListener('click', fit)
+  $('gridBtn').addEventListener('click', e => { state.grid = !state.grid; e.currentTarget.setAttribute('aria-pressed', String(state.grid)); renderMural(false) })
+  $('timeline').addEventListener('keydown', e => {
+    if (e.target.tagName === 'SELECT') return
+    if (e.key === 'ArrowLeft') { stop(); go(state.step - 1); e.preventDefault() }
+    if (e.key === 'ArrowRight') { stop(); go(state.step + 1); e.preventDefault() }
+  })
+  const pickNode = el => {
+    stop()
+    const sha = el.dataset.sha, i = Number(el.dataset.i)
+    if (branch().steps.includes(sha)) return go(i + 1)
+    setBranch(T.branches.find(b => b.steps.includes(sha)).name, i + 1)
+  }
+  $('graph').addEventListener('click', e => { const el = e.target.closest('.node'); if (el) pickNode(el) })
+  $('graph').addEventListener('keydown', e => { const el = e.target.closest('.node'); if (el && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); pickNode(el) } })
+  $('painterGrid').addEventListener('click', e => {
+    const el = e.target.closest('.painter')
+    if (!el) return
+    stop(); go(Number(el.dataset.n))
+    $('timelapse').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' })
+  })
+
+  let drag = null
+  const scale = () => { const r = svg.getBoundingClientRect(); return Math.max(vb.w / r.width, vb.h / r.height) }
+  const selectTile = el => { const n = Number(el.dataset.step); if (n) { stop(); go(n, false) } }
+  svg.addEventListener('pointerdown', e => { drag = { x: e.clientX, y: e.clientY, vx: vb.x, vy: vb.y, moved: false, tile: e.target.closest('.tile') }; svg.setPointerCapture(e.pointerId) })
+  svg.addEventListener('pointermove', e => {
+    if (drag) {
+      const dx = e.clientX - drag.x, dy = e.clientY - drag.y
+      if (!drag.moved && Math.hypot(dx, dy) > 4) { drag.moved = true; wrap.classList.add('dragging'); tip.hidden = true }
+      if (drag.moved) { const k = scale(); vb.x = drag.vx - dx * k; vb.y = drag.vy - dy * k; applyVB() }
+      return
+    }
+    const t = e.target.closest('.tile, .frontier')
+    if (!t) { tip.hidden = true; return }
+    if (t.classList.contains('tile')) {
+      const n = Number(t.dataset.step), c = n ? steps()[n - 1] : null
+      tip.textContent = c ? `Step ${n} · ${c.author} · ${t.dataset.key}` : `Tile ${t.dataset.key}`
+    } else {
+      const n = Number(t.dataset.touches)
+      tip.textContent = n ? `Open spot ${t.dataset.open} · touches ${n} painted tile${n > 1 ? 's' : ''}${t.dataset.best === 'true' ? ' · a model would pick this one' : ''}` : `The first tile goes here: ${t.dataset.open}`
+    }
+    const r = wrap.getBoundingClientRect()
+    tip.hidden = false
+    tip.style.left = Math.min(e.clientX - r.left + 14, r.width - tip.offsetWidth - 8) + 'px'
+    tip.style.top = (e.clientY - r.top + 14) + 'px'
+  })
+  svg.addEventListener('pointerup', () => { if (drag && !drag.moved && drag.tile) selectTile(drag.tile); drag = null; wrap.classList.remove('dragging') })
+  svg.addEventListener('pointerleave', () => { if (!drag) tip.hidden = true })
+  svg.addEventListener('keydown', e => { const t = e.target.closest('.tile'); if (t && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); selectTile(t) } })
+  svg.addEventListener('wheel', e => {
+    if (!e.ctrlKey && !e.metaKey) return
+    e.preventDefault()
+    const p = new DOMPoint(e.clientX, e.clientY).matrixTransform(svg.getScreenCTM().inverse())
+    zoom(e.deltaY > 0 ? 1.12 : 0.89, p.x, p.y)
+  }, { passive: false })
+}
+
+async function start() {
+  try {
+    T = await (await fetch('timeline.json', { cache: 'no-store' })).json()
+  } catch {
+    $('label').innerHTML = '<div class="empty"><h2>The mural could not load</h2><p>timeline.json is missing: run <code>node build.mjs</code> and open <code>dist/</code>.</p></div>'
+    return
+  }
+  CELL = T.season.tileSize
+  F = T.season.frame
+  FRAME_TILES = (F.x1 - F.x0 + 1) * (F.y1 - F.y0 + 1)
+  $('seasonLine').textContent = `Season ${T.season.season} · ${T.season.title} · ${FRAME_TILES} tiles`
+  if (T.repo.owner) { const a = $('repoLink'); a.href = `https://github.com/${T.repo.owner}/${T.repo.name}`; a.hidden = false }
+  const capsule = Object.values(T.commits).map(c => c.capsule).find(Boolean)
+  if (capsule) $('footLeft').innerHTML = `Painted through a <a href="${esc(capsule)}" target="_blank" rel="noopener noreferrer">Relay on LLM TimeMachine</a>`
+  $('branch').innerHTML = T.branches.map(b => `<option value="${esc(b.name)}">${esc(b.name)} · ${b.steps.length} step${b.steps.length === 1 ? '' : 's'}</option>`).join('')
+  $('branch').disabled = T.branches.length < 2
+  wire()
+  fit()
+  state.branch = branch().name
+  state.step = steps().length
+  renderPainters()
+  render(false)
+}
+start()
+</script>
+</body>
+</html>

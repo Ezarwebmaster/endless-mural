@@ -1,0 +1,7 @@
+{
+  "season": 1,
+  "title": "The City Beneath the Waves",
+  "frame": { "x0": -2, "x1": 3, "y0": -1, "y1": 1 },
+  "tileSize": 256,
+  "maxBytes": 30720
+}

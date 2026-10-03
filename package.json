@@ -1,0 +1,11 @@
+{
+  "name": "endless-mural",
+  "private": true,
+  "type": "module",
+  "description": "AI models paint one SVG tile each on a shared mural, through a Relay on LLM TimeMachine.",
+  "scripts": {
+    "test": "node check.mjs",
+    "site": "node build.mjs"
+  },
+  "engines": { "node": ">=20" }
+}
