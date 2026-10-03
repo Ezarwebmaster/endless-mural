@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="rock" x1="0" y1="0" x2="0" y2="256">
+      <stop stop-color="#76603f"/>
+      <stop offset="1" stop-color="#3b2f22"/>
+    </linearGradient>
+    <linearGradient id="root" x1="90" y1="0" x2="90" y2="256">
+      <stop stop-color="#8b7a52"/>
+      <stop offset="0.55" stop-color="#5c4a2e"/>
+      <stop offset="1" stop-color="#2f2618"/>
+    </linearGradient>
+    <radialGradient id="tunnel">
+      <stop stop-color="#ffd27a" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#6fd3c6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow">
+      <stop stop-color="#ffd27a" stop-opacity="0.5"/>
+      <stop offset="0.5" stop-color="#f0a95e" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#f0a95e" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="shellw" x1="0" y1="130" x2="0" y2="170">
+      <stop stop-color="#4d999e"/>
+      <stop offset="1" stop-color="#1d5666"/>
+    </linearGradient>
+    <radialGradient id="fishlight" cx="0.5" cy="0.5" r="0.5">
+      <stop stop-color="#ffd27a" stop-opacity="0.7"/>
+      <stop offset="1" stop-color="#ffd27a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <path fill="url(#rock)" d="M0 0H256V256H0Z"/>
+  <path fill="#8d7c58" opacity="0.35" d="M0 0H256V5C50 3 120 8 128 4S206 3 256 0Z"/>
+
+  <!-- Rock strata continued from tile 0_1's left edge (y=34, 48, 88, 100) -->
+  <g fill="none" stroke-linecap="round">
+    <g stroke="#5d4b2e" stroke-width="3" opacity="0.45">
+      <path d="M256 34C216 26 174 42 132 36S50 24 0 34"/>
+      <path d="M256 88C210 78 164 96 118 88S44 74 0 84"/>
+    </g>
+    <g stroke="#a08a5e" stroke-width="1.5" opacity="0.25">
+      <path d="M256 48C216 40 174 56 132 50S50 38 0 46"/>
+      <path d="M256 100C210 90 164 108 118 100S44 86 0 96"/>
+    </g>
+  </g>
+
+  <!-- Deep shadow band, soft -->
+  <path fill="#2b2317" opacity="0.18" d="M0 118C52 128 108 110 128 118S204 126 256 122V256H0Z"/>
+
+  <!-- A root of the city sinking deeper into the rock -->
+  <path fill="url(#root)" d="M72 0H82L84 28L80 56L88 88L80 128L84 256H70L74 196L70 128L74 88L70 56Z"/>
+
+  <!-- Cave entrance: the tunnel from tile 0_1 continues left into this tile -->
+  <g>
+    <path fill="#241d14" d="M256 66H200V104H256Z" opacity="0.85"/>
+    <path fill="url(#tunnel)" d="M256 68H222V104H256Z" opacity="0.45"/>
+    <path fill="#4a3a24" d="M256 100H206V108H256Z"/>
+  </g>
+
+  <!-- My mark: a lantern-fish drifting out of the cave mouth -->
+  <g>
+    <ellipse cx="152" cy="136" rx="56" ry="44" fill="url(#tunnel)"/>
+    <ellipse cx="152" cy="136" rx="32" ry="24" fill="url(#shellw)"/>
+    <circle cx="164" cy="132" r="4" fill="#ffd27a"/>
+    <path fill="none" stroke="#8fd6cc" stroke-width="2" stroke-linecap="round" d="M120 136Q104 128 96 136Q104 144 120 136"/>
+    <path fill="none" stroke="#8fd6cc" stroke-width="1.5" d="M168 126V136M170 146V136"/>
+    <circle cx="152" cy="136" r="8" fill="url(#fishlight)"/>
+  </g>
+
+  <!-- Distant specks deeper in the rock -->
+  <g fill="#6fd3c6" opacity="0.5">
+    <circle cx="64" cy="140" r="2"/>
+    <circle cx="118" cy="166" r="1.5"/>
+  </g>
+
+  <!-- Kelp and pebbles at the bottom, fading before the edges -->
+  <g fill="none" stroke="#3f6b4a" stroke-width="3" stroke-linecap="round" opacity="0.55">
+    <path d="M106 256Q112 226 104 206"/>
+    <path d="M200 256Q206 226 198 200"/>
+  </g>
+  <g fill="#584734" opacity="0.5">
+    <ellipse cx="110" cy="242" rx="6" ry="3"/>
+    <ellipse cx="176" cy="246" rx="5" ry="2.5"/>
+    <ellipse cx="224" cy="250" rx="4" ry="2"/>
+  </g>
+</svg>
