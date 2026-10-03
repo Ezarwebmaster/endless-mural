@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#11598f"/>
+      <stop offset="1" stop-color="#0a3d66"/>
+    </linearGradient>
+    <linearGradient id="sand" x1="0" y1="204" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#b8996a"/>
+      <stop offset="1" stop-color="#76603f"/>
+    </linearGradient>
+    <linearGradient id="dome" x1="0" y1="128" x2="70" y2="198" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4d9aa0"/>
+      <stop offset="1" stop-color="#1a5470"/>
+    </linearGradient>
+    <linearGradient id="shaft" x1="0" y1="30" x2="0" y2="180" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#91e4dd" stop-opacity="0"/>
+      <stop offset="0.32" stop-color="#91e4dd" stop-opacity="0.09"/>
+      <stop offset="1" stop-color="#91e4dd" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="aura">
+      <stop stop-color="#6ae2cb" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#6ae2cb" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="lamp">
+      <stop stop-color="#ffd27a" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#ffd27a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="veil" x1="0" y1="0" x2="0" y2="60" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8fd8d4" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#8fd8d4" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Left seam: same water gradient, sand top line at y=204 and the Outer
+       Lantern Chamber's dome flank descending from (0,124) as in (2,0). -->
+  <path fill="url(#water)" d="M0 0H256V256H0Z"/>
+  <path fill="url(#shaft)" d="M26 34H72L104 176L48 168Z"/>
+  <ellipse cx="150" cy="126" rx="88" ry="92" fill="url(#aura)"/>
+
+  <!-- Distant roofline, continuing the ruin row of row 0. -->
+  <g fill="#0b4264" opacity="0.72">
+    <path d="M78 204V176L90 162H106V176H112V204Z"/>
+    <path d="M150 204V168H160V156H182V168H190V204Z"/>
+    <path d="M196 204V182L210 170L224 182V204Z"/>
+  </g>
+  <g fill="#66b4b8" opacity="0.2">
+    <path d="M84 162H88V186H84ZM96 162H100V186H96Z"/>
+    <path d="M156 162H162V184H156ZM170 162H176V184H170Z"/>
+    <path d="M202 180H212V198H202Z"/>
+  </g>
+
+  <!-- Sand: the top line leaves the left edge at exactly y=204 and rolls on. -->
+  <path fill="url(#sand)" d="M0 204C24 204 44 200 70 202S114 209 142 205S190 199 216 203S242 204 256 204V256H0Z"/>
+  <ellipse cx="150" cy="216" rx="66" ry="10" fill="#655b49" opacity="0.28"/>
+
+  <!-- The Outer Lantern Chamber's east shoulder, carried over from (2,0). -->
+  <path fill="url(#dome)" d="M-6 130H44V198H-6Z"/>
+  <path fill="#286777" d="M-6 125H50V137H-6Z"/>
+  <path fill="#79c5bb" d="M-6 125H50V128H-6Z" opacity="0.9"/>
+  <path fill="#2a7183" d="M-6 124C-6 108 2 98 16 96C28 95 38 104 42 118L44 124Z"/>
+  <path fill="#123f55" d="M38 131H50V198H38Z"/>
+  <path fill="#63a7a6" d="M-4 134H-1V195H-4Z" opacity="0.6"/>
+  <g fill="#0b394f">
+    <path d="M6 168V156A6 6 0 0 1 18 156V168Z"/>
+    <path d="M26 168V156A6 6 0 0 1 38 156V168Z"/>
+  </g>
+  <g fill="#ffd27a">
+    <path d="M9 165V156A3 3 0 0 1 15 156V165Z" opacity="0.85"/>
+    <path d="M29 165V156A3 3 0 0 1 35 156V165Z" opacity="0.6"/>
+  </g>
+  <path fill="#73ada6" d="M-4 170H42V173H-4Z" opacity="0.5"/>
+  <path fill="#69918b" d="M-4 196H46V200H-4ZM-4 200H44V204H-4ZM-4 204H48V208H-4Z"/>
+
+  <!-- My mark: the Abyss Gate — a dark city arch on the cliff edge, its
+       unlit threshold glowing faintly, with a thread of light that sinks
+       into the sand for a future tile below to continue. -->
+  <path fill="#0c3a4c" d="M188 204V156C188 140 200 128 214 128C228 128 240 140 240 156V204Z"/>
+  <path fill="#07293a" d="M202 204V160C202 150 208 142 214 142C220 142 226 150 226 160V204Z"/>
+  <ellipse cx="214" cy="196" rx="34" ry="22" fill="url(#lamp)"/>
+  <path fill="#0a3346" d="M182 152H246V158H182Z"/>
+  <path fill="#4f9aa0" d="M182 150H246V152.5H182Z" opacity="0.8"/>
+  <g fill="#ffd27a">
+    <circle cx="214" cy="196" r="3.4" opacity="0.9"/>
+    <circle cx="186" cy="168" r="2" opacity="0.5"/>
+    <circle cx="242" cy="172" r="2" opacity="0.5"/>
+  </g>
+  <path fill="none" stroke="#8fe3d8" stroke-width="2" stroke-linecap="round" opacity="0.6"
+        d="M212 206C210 222 214 236 212 256"/>
+  <path fill="none" stroke="#8fe3d8" stroke-width="1" opacity="0.35"
+        d="M216 210C218 226 216 242 218 256"/>
+  <ellipse cx="214" cy="212" rx="20" ry="8" fill="url(#lamp)"/>
+
+  <!-- Coral, weeds and pebbles on the sand. -->
+  <g fill="none" stroke-linecap="round">
+    <g stroke="#216e70" stroke-width="3">
+      <path d="M60 212Q52 196 58 182M54 199L46 190M53 192L61 184"/>
+      <path d="M150 210Q158 194 154 182M160 197L169 188M159 190L151 181"/>
+    </g>
+    <g stroke="#d98778" stroke-width="2.5">
+      <path d="M96 214L94 198M93 203L86 197"/>
+      <path d="M182 210L180 194M179 199L172 192"/>
+    </g>
+    <g stroke="#d2b486" stroke-width="1" opacity="0.45">
+      <path d="M64 226Q82 222 100 226"/>
+      <path d="M118 236Q140 231 162 236"/>
+      <path d="M186 228Q206 224 226 228"/>
+    </g>
+  </g>
+  <g fill="#7c7152">
+    <ellipse cx="72" cy="240" rx="4" ry="2"/>
+    <ellipse cx="150" cy="244" rx="3" ry="1.5"/>
+    <ellipse cx="230" cy="234" rx="5" ry="2"/>
+  </g>
+  <g fill="none" stroke="#3f6b4a" stroke-width="3" stroke-linecap="round" opacity="0.55">
+    <path d="M56 256Q50 226 58 206"/>
+    <path d="M148 256Q156 224 148 206"/>
+  </g>
+  <g fill="#584734" opacity="0.5">
+    <ellipse cx="120" cy="242" rx="6" ry="3"/>
+    <ellipse cx="176" cy="238" rx="4" ry="2"/>
+    <ellipse cx="24" cy="250" rx="5" ry="2.5"/>
+  </g>
+
+  <!-- Bubbles and glints, fading before the top and right edges. -->
+  <g fill="none" stroke="#8ed5d1" stroke-width="1" opacity="0.4">
+    <circle cx="120" cy="76" r="2.5"/>
+    <circle cx="116" cy="60" r="1.5"/>
+    <circle cx="124" cy="46" r="2"/>
+    <circle cx="150" cy="150" r="2"/>
+  </g>
+  <g fill="#8ccfc9" opacity="0.3">
+    <circle cx="70" cy="66" r="1"/>
+    <circle cx="96" cy="104" r="1.2"/>
+    <circle cx="212" cy="72" r="1"/>
+  </g>
+  <g fill="#76c8c6" opacity="0.6">
+    <path d="M120 92Q127 85 135 91Q128 97 120 92L116 88V95Z"/>
+    <path d="M158 68Q164 63 171 68Q164 73 158 68L155 65V71Z"/>
+  </g>
+  <g fill="url(#veil)" opacity="0.7">
+    <path d="M18 40C74 26 168 24 232 42C186 36 76 34 18 48Z"/>
+  </g>
+</svg>
