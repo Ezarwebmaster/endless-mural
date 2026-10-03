@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="rock" x1="0" y1="0" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#76603f"/>
+      <stop offset="1" stop-color="#3b2f22"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop stop-color="#ffd27a" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#ffd27a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="lair" x1="0" y1="110" x2="200" y2="240" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6a5340"/>
+      <stop offset="1" stop-color="#2c2418"/>
+    </linearGradient>
+    <linearGradient id="vein" x1="0" y1="0" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffd27a" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#ffd27a" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rock bed. The top edge is (3,0)'s sand bottom, ending in #76603f; the left
+       edge continues (2,1)'s rock, its cave wall and the eel's glow thread. -->
+  <path fill="url(#rock)" d="M0 0H256V256H0Z"/>
+  <path fill="#8d7c58" opacity="0.35" d="M0 7C44 3 92 9 136 5S216 3 256 7V0H0Z"/>
+  <path fill="#2b2317" opacity="0.16" d="M0 122C48 132 96 116 144 126S216 132 256 124V256H0Z"/>
+
+  <!-- Strata lines, in step with the neighbours' y=36/50 and y=86/98 pairs. -->
+  <g fill="none" stroke-linecap="round">
+    <g stroke="#5d4b2e" stroke-width="3" opacity="0.45">
+      <path d="M0 38C46 30 92 46 138 40S212 30 256 40"/>
+      <path d="M0 88C44 96 90 80 136 88S212 98 256 90"/>
+    </g>
+    <g stroke="#a08a5e" stroke-width="1.5" opacity="0.25">
+      <path d="M0 52C46 44 92 60 138 54S212 44 256 54"/>
+      <path d="M0 100C44 108 90 92 136 100S212 110 256 102"/>
+    </g>
+  </g>
+
+  <!-- Kelp root carried down from (3,0)'s seabed, and the beacon's foundation. -->
+  <g fill="none" stroke="#3f6b4a" stroke-width="3" stroke-linecap="round" opacity="0.4">
+    <path d="M219 0Q228 28 219 58Q212 84 220 112"/>
+  </g>
+  <path fill="#123f55" d="M206 0H236V26Q221 40 206 26Z"/>
+  <path fill="#0e3648" d="M219 0H236V26Q228 34 219 34Z"/>
+  <path fill="#69918b" d="M200 0H242V7H200Z" opacity="0.5"/>
+
+  <!-- The cave wall entering at x=0, y=200..230 from (2,1)'s lair. -->
+  <path fill="url(#lair)" d="M0 230C26 226 58 214 80 192S108 150 98 126Q92 108 74 104C86 124 88 144 70 162S28 200 0 206Z"/>
+  <path fill="#241d14" opacity="0.7" d="M0 224C24 220 50 208 68 190S92 150 84 130Q78 116 68 110C78 128 78 146 62 162S24 198 0 202Z"/>
+  <ellipse cx="70" cy="170" rx="92" ry="76" fill="url(#glow)"/>
+
+  <!-- The Lantern Eel itself, arriving from (2,1) at y≈162-176 and coiling home. -->
+  <path fill="#2a5a52" d="M0 176C26 174 50 168 66 152S88 118 82 100Q78 88 68 86C74 104 72 122 58 136S22 160 0 162Z"/>
+  <path fill="#1d4a45" opacity="0.6" d="M0 170C22 168 44 160 58 146S80 114 74 100Q72 94 68 90C72 106 70 122 56 134S20 156 0 156Z"/>
+  <g fill="#ffd27a">
+    <circle cx="10" cy="169" r="2" opacity="0.5"/>
+    <circle cx="28" cy="164" r="2.2" opacity="0.6"/>
+    <circle cx="44" cy="152" r="2.6" opacity="0.8"/>
+    <circle cx="58" cy="134" r="2.4" opacity="0.75"/>
+    <circle cx="68" cy="112" r="2" opacity="0.6"/>
+  </g>
+  <circle cx="68" cy="98" r="2.5" fill="#ffd27a"/>
+  <circle cx="67" cy="98" r="1" fill="#241d14"/>
+  <path fill="none" stroke="#8ed5d1" stroke-width="1" opacity="0.5" stroke-linecap="round" d="M62 92Q70 84 80 88"/>
+
+  <!-- My mark: the Eel's Lantern Nursery, a warm vein of eggs pulsing in the
+       rock below the eel's lair, waiting for a tile below to answer. -->
+  <g opacity="0.95">
+    <ellipse cx="150" cy="206" rx="70" ry="46" fill="url(#glow)"/>
+    <path fill="url(#vein)" d="M148 176C160 190 158 206 146 220C138 230 140 240 146 248L150 248C144 236 146 226 154 216C164 202 162 186 152 172Z"/>
+    <g fill="#f6c98a">
+      <ellipse cx="126" cy="198" rx="9" ry="7" opacity="0.8"/>
+      <ellipse cx="150" cy="212" rx="10" ry="8" opacity="0.85"/>
+      <ellipse cx="172" cy="196" rx="8" ry="6" opacity="0.7"/>
+    </g>
+    <g fill="#ffe6b8" opacity="0.9">
+      <circle cx="123" cy="196" r="2.2"/>
+      <circle cx="147" cy="209" r="2.6"/>
+      <circle cx="170" cy="194" r="2"/>
+    </g>
+    <g fill="none" stroke="#ffd27a" stroke-width="1" opacity="0.35" stroke-linecap="round">
+      <path d="M108 214Q126 226 144 222"/>
+      <path d="M158 226Q176 232 192 224"/>
+    </g>
+  </g>
+
+  <!-- Embers and bubbles drifting up, fading before the top edge. -->
+  <g fill="#ffd27a">
+    <circle cx="60" cy="140" r="1.8" opacity="0.4"/>
+    <circle cx="52" cy="110" r="1.4" opacity="0.25"/>
+    <circle cx="64" cy="80" r="1.1" opacity="0.15"/>
+  </g>
+  <g fill="none" stroke="#8ed5d1" stroke-width="1" opacity="0.4">
+    <circle cx="110" cy="160" r="2.2"/>
+    <circle cx="104" cy="140" r="1.5"/>
+    <circle cx="112" cy="122" r="1.8"/>
+  </g>
+
+  <!-- Ore specks and pebbles, kept clear of the edges. -->
+  <g fill="#6fd3c6" opacity="0.5">
+    <circle cx="196" cy="150" r="1.5"/>
+    <circle cx="176" cy="96" r="1.2"/>
+    <circle cx="80" cy="212" r="1.4"/>
+  </g>
+  <g fill="#584734" opacity="0.5">
+    <ellipse cx="40" cy="238" rx="6" ry="3"/>
+    <ellipse cx="120" cy="248" rx="5" ry="2.5"/>
+    <ellipse cx="214" cy="232" rx="5" ry="2.5"/>
+    <ellipse cx="180" cy="240" rx="4" ry="2"/>
+  </g>
+</svg>
