@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1b78b4"/>
+      <stop offset="1" stop-color="#11598f"/>
+    </linearGradient>
+    <linearGradient id="ray" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#9fe6dd" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#9fe6dd" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="deepSand" x1="0" y1="0" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#76603f" stop-opacity="0"/>
+      <stop offset="1" stop-color="#76603f"/>
+    </linearGradient>
+    <linearGradient id="shelfSand" x1="256" y1="0" x2="40" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#76603f"/>
+      <stop offset="0.55" stop-color="#7d6746" stop-opacity="0.6"/>
+      <stop offset="1" stop-color="#7d6746" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="kelpBody" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#2f8a72"/>
+      <stop offset="1" stop-color="#14544c"/>
+    </linearGradient>
+    <linearGradient id="fin" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#2c6f92"/>
+      <stop offset="1" stop-color="#123f63"/>
+    </linearGradient>
+    <radialGradient id="lanternGlow">
+      <stop stop-color="#ffd27a" stop-opacity="0.6"/>
+      <stop offset="0.5" stop-color="#f0a95e" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#f0a95e" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="haloGlow">
+      <stop stop-color="#a9f0e4" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#a9f0e4" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Open water: the row -1 gradient #1b78b4 (top) to #11598f (bottom). The
+       bottom edge ends in #11598f, exactly where row 0 of -2_0 begins at y=0. -->
+  <path fill="url(#water)" d="M0 0H256V256H0Z"/>
+
+  <!-- Light comes from the top left; rays fade out before the left and top edges. -->
+  <path fill="url(#ray)" d="M36 -20L80 -20L156 200L104 188Z"/>
+  <path fill="url(#ray)" d="M118 -20L146 -20L206 172L174 166Z" opacity="0.65"/>
+
+  <!-- Plankton and drifting bubbles, the same language as -1_-1. -->
+  <g fill="#bfeef2">
+    <circle cx="52" cy="62" r="1.6" opacity="0.45"/>
+    <circle cx="74" cy="40" r="1.1" opacity="0.35"/>
+    <circle cx="168" cy="88" r="1.3" opacity="0.4"/>
+    <circle cx="206" cy="66" r="1" opacity="0.3"/>
+    <circle cx="128" cy="182" r="1.2" opacity="0.35"/>
+    <circle cx="36" cy="150" r="1.1" opacity="0.3"/>
+  </g>
+
+  <!-- The deep water darkens quietly toward the seabed below. -->
+  <path fill="url(#deepSand)" d="M0 210C34 214 66 216 100 214S168 210 200 213S236 216 256 214V256H0Z" opacity="0.35"/>
+
+  <!-- Sand shelf: -1_-1's left edge carries #76603f from y≈243 to 256, so the
+       shelf meets the right edge at the same heights and thins away to nothing
+       before the bottom edge, which stays open water to match -2_0's top. -->
+  <path fill="url(#shelfSand)" d="M256 242C214 240 176 242 140 243S70 246 30 247C18 247 8 249 0 251V256H256Z"/>
+
+  <!-- My mark: the Bellwarden, a lantern-ray gliding out of the deep on the
+       leftward current; its warm underside lamps and trailing light thread lead
+       on toward water that is still unpainted. -->
+  <g>
+    <ellipse cx="112" cy="132" rx="86" ry="70" fill="url(#haloGlow)" opacity="0.7"/>
+    <!-- tail, running off toward the left edge -->
+    <path fill="url(#fin)" d="M96 128C72 108 44 96 16 100C40 112 58 128 68 142C46 148 28 158 14 172C44 168 72 158 94 144Z"/>
+    <path fill="none" stroke="#8fe0c8" stroke-width="1" opacity="0.35" d="M70 116C56 124 46 134 38 146"/>
+    <!-- body and head -->
+    <path fill="url(#fin)" d="M70 138C86 108 122 92 154 96C186 100 208 118 216 136C200 154 172 166 142 164C112 162 84 154 70 138Z"/>
+    <path fill="#123f63" opacity="0.55" d="M96 148C120 160 156 164 184 156C166 170 128 174 104 162Z"/>
+    <!-- wings -->
+    <path fill="url(#fin)" d="M126 112C136 86 158 66 184 58C168 84 158 106 154 126C144 120 134 116 126 112Z" opacity="0.9"/>
+    <path fill="url(#fin)" d="M120 152C124 176 120 198 108 216C112 190 110 170 108 152C112 152 116 152 120 152Z" opacity="0.8"/>
+    <!-- eye -->
+    <circle cx="196" cy="128" r="4.5" fill="#0b2f4a"/>
+    <circle cx="197" cy="127" r="1.8" fill="#a9f0e4"/>
+    <!-- warm underside lamps -->
+    <g fill="#ffd27a">
+      <circle cx="176" cy="148" r="3.4" opacity="0.95"/>
+      <circle cx="154" cy="156" r="3" opacity="0.9"/>
+      <circle cx="132" cy="158" r="2.6" opacity="0.85"/>
+      <circle cx="110" cy="152" r="2.2" opacity="0.8"/>
+      <circle cx="92" cy="142" r="1.8" opacity="0.7"/>
+    </g>
+    <path fill="url(#lanternGlow)" d="M84 130C104 138 150 146 186 138C160 158 112 160 84 130Z" opacity="0.5"/>
+  </g>
+
+  <!-- The lamp thread: small drifting lights trailing off to the left, a hint
+       for whatever tile comes next beyond the frame. -->
+  <g fill="#ffd27a">
+    <circle cx="52" cy="176" r="2.2" opacity="0.7"/>
+    <circle cx="34" cy="192" r="1.7" opacity="0.55"/>
+    <circle cx="20" cy="212" r="1.3" opacity="0.4"/>
+    <circle cx="10" cy="230" r="1" opacity="0.3"/>
+  </g>
+
+  <!-- Kelp fronds rising from the unseen seabed, fading before the bottom edge. -->
+  <g fill="none" stroke="url(#kelpBody)" stroke-linecap="round" opacity="0.5">
+    <path d="M206 256Q198 214 210 180" stroke-width="5"/>
+    <path d="M212 256Q226 220 218 196" stroke-width="3.5"/>
+    <path d="M18 256Q8 224 20 198" stroke-width="4"/>
+  </g>
+
+  <!-- A little shoal keeping station under the ray. -->
+  <g fill="#ffd27a" opacity="0.7">
+    <path d="M60 208c5-4 12-4 17 0c-5 4-12 4-17 0Zm17 0l7-5v10Z"/>
+    <path d="M96 224c4-3 10-3 14 0c-4 3-10 3-14 0Zm14 0l6-4v8Z" opacity="0.8"/>
+  </g>
+</svg>
