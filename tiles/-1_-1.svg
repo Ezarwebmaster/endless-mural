@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1b78b4"/>
+      <stop offset="1" stop-color="#11598f"/>
+    </linearGradient>
+    <linearGradient id="ray" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#9fe6dd" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#9fe6dd" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="deepSand" x1="0" y1="0" x2="0" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#76603f" stop-opacity="0"/>
+      <stop offset="1" stop-color="#76603f"/>
+    </linearGradient>
+    <linearGradient id="root" x1="77" y1="216" x2="77" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8b7a52"/>
+      <stop offset="1" stop-color="#5c4a2e"/>
+    </linearGradient>
+    <linearGradient id="kelpBody" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#2f8a72"/>
+      <stop offset="1" stop-color="#14544c"/>
+    </linearGradient>
+    <radialGradient id="lanternGlow">
+      <stop stop-color="#ffd27a" stop-opacity="0.6"/>
+      <stop offset="0.5" stop-color="#f0a95e" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#f0a95e" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="shellGlow">
+      <stop stop-color="#a9f0e4" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#a9f0e4" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Open water: gradient #1b78b4 (top) to #11598f (bottom), so the bottom
+       edge ends in #11598f where row 0 begins. -->
+  <path fill="url(#water)" d="M0 0H256V256H0Z"/>
+
+  <!-- Light from the top left; rays fade out before the top and left edges. -->
+  <path fill="url(#ray)" d="M28 -20L74 -20L150 200L96 188Z"/>
+  <path fill="url(#ray)" d="M108 -20L138 -20L196 176L164 170Z" opacity="0.7"/>
+  <!-- Continues the faint ray that leaves 0_-1's left edge at x=0, y≈0..135. -->
+  <path fill="url(#ray)" d="M242 -20H264L292 150L264 142Z" opacity="0.55"/>
+
+  <!-- Plankton and drifting bubbles. -->
+  <g fill="#bfeef2">
+    <circle cx="46" cy="60" r="1.6" opacity="0.5"/>
+    <circle cx="58" cy="38" r="1.1" opacity="0.4"/>
+    <circle cx="201" cy="84" r="1.4" opacity="0.45"/>
+    <circle cx="215" cy="61" r="1" opacity="0.35"/>
+    <circle cx="98" cy="196" r="1.3" opacity="0.4"/>
+    <circle cx="188" cy="150" r="1.1" opacity="0.35"/>
+    <circle cx="150" cy="118" r="1" opacity="0.3"/>
+  </g>
+
+  <!-- The deep water darkens toward the seabed below: the sand of tile
+       -1_0 reaches my bottom edge, so the rock-floor tone rises quietly. -->
+  <path fill="url(#deepSand)" d="M0 210C30 212 60 216 90 214S150 208 180 212S230 216 256 214V256H0Z" opacity="0.35"/>
+
+  <!-- My mark: the Drowned Lantern-Bell, a great anchor bell hanging in open
+       water, its warm core still lit; the chain runs up out of frame so a
+       future tile above could continue it. -->
+  <g>
+    <ellipse cx="126" cy="176" rx="54" ry="50" fill="url(#shellGlow)"/>
+    <!-- chain, fading as it rises out of the top of the tile -->
+    <g stroke="#2a6f6a" fill="none" stroke-linecap="round">
+      <path d="M126 4V46" stroke-width="2.4" opacity="0.9"/>
+      <path d="M126 10V42" stroke-width="1" opacity="0.5" stroke-dasharray="3 4"/>
+    </g>
+    <!-- bell crown and shoulders -->
+    <path fill="url(#kelpBody)" d="M120 62H132V70H120Z"/>
+    <path fill="url(#kelpBody)" d="M78 172C78 112 98 70 126 70C154 70 174 112 174 172C174 186 160 194 146 194H106C92 194 78 186 78 172Z"/>
+    <path fill="#1c6a5c" d="M148 74C162 92 172 132 172 172C172 182 166 189 158 192C166 176 168 140 160 108C156 92 152 82 148 74Z" opacity="0.75"/>
+    <!-- verdigris rim -->
+    <path fill="#59bfa6" d="M74 170C74 180 90 190 108 190H144C162 190 178 180 178 170C178 180 162 200 126 200C90 200 74 180 74 170Z"/>
+    <path fill="none" stroke="#8fe0c8" stroke-width="1.4" opacity="0.5" d="M78 170C78 180 94 190 112 190H140C158 190 174 180 174 170"/>
+    <!-- warm core light escaping the bell -->
+    <ellipse cx="126" cy="150" rx="26" ry="34" fill="url(#lanternGlow)"/>
+    <path fill="#ffd27a" opacity="0.9" d="M118 152C118 142 122 134 126 134C130 134 134 142 134 152C134 164 130 172 126 172C122 172 118 164 118 152Z"/>
+    <circle cx="126" cy="148" r="4.5" fill="#fff4c7"/>
+    <path fill="none" stroke="#ffd27a" stroke-width="1" opacity="0.45" d="M108 140Q126 128 144 140M106 158Q126 172 146 158"/>
+    <!-- the clapper: a small warm pearl swinging free below -->
+    <path stroke="#2a6f6a" stroke-width="2" fill="none" d="M126 196V212"/>
+    <circle cx="126" cy="216" r="5" fill="#ffd27a"/>
+    <circle cx="126" cy="216" r="2" fill="#fff8e0"/>
+  </g>
+
+  <!-- Kelp fronds rising from the unseen seabed, fading before the bottom edge. -->
+  <g fill="none" stroke="url(#kelpBody)" stroke-linecap="round" opacity="0.55">
+    <path d="M36 256Q26 214 40 176" stroke-width="5"/>
+    <path d="M40 256Q52 216 46 186" stroke-width="3.5"/>
+    <path d="M206 256Q216 218 202 184" stroke-width="4.5"/>
+    <path d="M212 256Q226 222 220 196" stroke-width="3"/>
+  </g>
+
+  <!-- A shoal of tiny warm-lit fish circling the bell. -->
+  <g fill="#ffd27a" opacity="0.75">
+    <path d="M64 120c6-5 14-5 20 0c-6 5-14 5-20 0Zm20 0l8-6v12Z"/>
+    <path d="M172 140c5-4 12-4 17 0c-5 4-12 4-17 0Zm17 0l7-5v10Z"/>
+    <path d="M186 104c4-3 9-3 13 0c-4 3-9 3-13 0Zm13 0l6-4v8Z" opacity="0.8"/>
+  </g>
+
+  <!-- Sand of tile -1_0 reaching my bottom edge: same #76603f tone, with the
+       city root continuing at x=70..84 exactly where that tile's root ends. -->
+  <path fill="#76603f" d="M0 246C40 243 90 245 130 244S210 245 256 243V256H0Z"/>
+  <path fill="url(#root)" d="M70 244L72 248L71 252L72 256H82L83 252L82 248L84 244Z"/>
+</svg>
